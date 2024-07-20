@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Windows软件调试初探-架构和系统部件 | The Blog of Monoceros406</title><meta name="author" content="Monoceros406"><meta name="copyright" content="Monoceros406"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="Windows软件调试初探-架构和系统部件系统概览在内核空间中： 硬件抽象层HAL隔离CPU架构层面核心硬件的硬件差异性，使内核和顶层模块可使同一的方式访问硬件，不负责的外设设备硬件通过I&#x2F;O管理器加载不同设备驱动程序解决。执行体如内存管理器、进程管理器、I&#x2F;O管理器。Windows子系统驱动程序Win32K.sys包括USER和GDI两部分，USER负责窗口管理、用户输入等，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows软件调试初探-架构和系统部件">
+<meta property="og:url" content="http://monoceros.github.io/2024/07/20/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6/index.html">
+<meta property="og:site_name" content="The Blog of Monoceros406">
+<meta property="og:description" content="Windows软件调试初探-架构和系统部件系统概览在内核空间中： 硬件抽象层HAL隔离CPU架构层面核心硬件的硬件差异性，使内核和顶层模块可使同一的方式访问硬件，不负责的外设设备硬件通过I&#x2F;O管理器加载不同设备驱动程序解决。执行体如内存管理器、进程管理器、I&#x2F;O管理器。Windows子系统驱动程序Win32K.sys包括USER和GDI两部分，USER负责窗口管理、用户输入等，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://monoceros.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2024-07-20T00:21:55.000Z">
+<meta property="article:modified_time" content="2024-07-20T11:07:04.398Z">
+<meta property="article:author" content="Monoceros406">
+<meta property="article:tag" content="逆向工程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://monoceros.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/avatar.jpg"><link rel="canonical" href="http://monoceros.github.io/2024/07/20/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Windows软件调试初探-架构和系统部件',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-20 19:07:04'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">250</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="The Blog of Monoceros406"><span class="site-name">The Blog of Monoceros406</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Windows软件调试初探-架构和系统部件</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-20T00:21:55.000Z" title="发表于 2024-07-20 08:21:55">2024-07-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-20T11:07:04.398Z" title="更新于 2024-07-20 19:07:04">2024-07-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Windows软件调试初探-架构和系统部件"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Windows软件调试初探-架构和系统部件"><a href="#Windows软件调试初探-架构和系统部件" class="headerlink" title="Windows软件调试初探-架构和系统部件"></a>Windows软件调试初探-架构和系统部件</h1><h2 id="系统概览"><a href="#系统概览" class="headerlink" title="系统概览"></a>系统概览</h2><p>在内核空间中：</p>
+<p>硬件抽象层HAL隔离CPU架构层面核心硬件的硬件差异性，使内核和顶层模块可使同一的方式访问硬件，不负责的外设设备硬件通过I&#x2F;O管理器加载不同设备驱动程序解决。执行体如内存管理器、进程管理器、I&#x2F;O管理器。Windows子系统驱动程序Win32K.sys包括USER和GDI两部分，USER负责窗口管理、用户输入等，GDI负责显示输出和各种图形操作，还有DxgKrnl.sys图形核心负责管理GPU 有关核心任务。内核支持模块有用于内核调试的KDCOM.DLL，用于启动截断显示驱动的BOOTVID.DLL，用于检查模块完好性的CI.DLL，用于支持日志功能的CLFS.SYS，支持WHEA的PSHED.DLL，管理流媒体的KS.sys，网络套接字WinSock的内核空间接口驱动AFD.sys，管理网卡驱动的NDIS.sys，管理网络过滤驱动的Windows过滤平台清凉过滤器驱动程序Wfplw.sys，支持ACPI标准的ACPI.sys，PCI总线的PCI.sys，NTFS文件系统的实现NTFS.SYS。</p>
+<p>在用户空间中：</p>
+<p>会话管理器进程SMSS.EXE是系统中第一个根据映像文件创建的进程，它加载初始化Win32K.SYS，创建CSRSS.EXE和WinLogon.EXE。Windows客户端&#x2F;服务端运行时子系统服务器进程CSRSS.EXE为Windows子系统各个进程提供服务如登记进程和线程、管理控制台窗口、管理DOS程序虚拟机VDM等。登录进程WinLogon.EXE负责用户登录和安全相关，它创建LSASS进程和Services.EXE进程，实现sfc.dll和sfc_os.dll的文件保护功能。本地安全和认证进程LSASS.EXE负责用户身份验证。服务管理进程Services.EXE负责启动和管理系统服务程序。外壳程序Shell默认为Explorer.exe。</p>
+<h2 id="内核和HAL模块"><a href="#内核和HAL模块" class="headerlink" title="内核和HAL模块"></a>内核和HAL模块</h2><p>所谓内核文件为NTOSKRNL.EXE，32位且支持物理地址扩展PAE的改为NTKRNLPA.EXE，对于x64架构的只有前者，后者用不上就没了。Windows系统启动时由系统加载程序NTLDR或WinLoad根据启动选项是否启用PAE加载其中一个。</p>
+<p>HAL文件有多个版本，系统中不一定是哪个，如下表。注意原始文件名指的是安装文件复制出的文件名，后期都将改为hal.dll，文件右键属性详细信息中能够看到原始文件名。</p>
+<table>
+<thead>
+<tr>
+<th>原始文件名</th>
+<th>适用平台</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hal.dll</td>
+<td>标准平台</td>
+</tr>
+<tr>
+<td>halacpi.dll</td>
+<td>符合ACPI的标准硬件平台</td>
+</tr>
+<tr>
+<td>halapic.dll</td>
+<td>支持高级可编程中断控制器APIC的硬件平台</td>
+</tr>
+<tr>
+<td>halaacpi.dll</td>
+<td>同时支持ACPI 和APIC的硬件平台</td>
+</tr>
+<tr>
+<td>halmps.dll</td>
+<td>系统中有一个多处理器</td>
+</tr>
+<tr>
+<td>halmacpi.dll</td>
+<td>ACPI的多处理器系统</td>
+</tr>
+</tbody></table>
+<p>函数<code>nt!KzLowerIrql</code>直接操作APIC任务优先级寄存器TPR的别名CR8寄存器，用于降低中断请求级别IRQL。</p>
+<p><code>!process</code>不显示空闲进程，内核调试中先用<code>!prcb</code>显示处理器控制块。Threads行的Current字段为当前CPU 正执行线程的ETHREAD结构，Next为等待执行的线程，Idle为当前CPU的空闲线程ETHREAD结构地址，用<code>!thread</code>显示线程详细信息。Cid字段为0表示空闲进程，系统进程为4，Owning Process为空闲进程EPROCESS，Image映像名Idle是瞎扯的，UserTime为0表示只在内核模式执行，KernelTime为在内核模式执行时间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">1: kd&gt; !prcb</span><br><span class="line">PRCB for Processor 1 at ffffd7014b867180:</span><br><span class="line">Current IRQL -- 13</span><br><span class="line">Threads--  Current ffffd7014b872140 Next ffffe78b104c7080 Idle ffffd7014b872140</span><br><span class="line">Processor Index 1 Number (0, 1) GroupSetMember 2</span><br><span class="line">Interrupt Count -- 00027b13</span><br><span class="line">Times -- Dpc    00000025 Interrupt 00000006 </span><br><span class="line">         Kernel 00007083 User      00000063 </span><br><span class="line">1: kd&gt; !thread ffffd7014b872140</span><br><span class="line">THREAD ffffd7014b872140  Cid 0000.0000  Teb: 0000000000000000 Win32Thread: 0000000000000000 STANDBY</span><br><span class="line">Not impersonating</span><br><span class="line">DeviceMap                 ffff800d6f247840</span><br><span class="line">Owning Process            fffff80753b24a00       Image:         Idle</span><br><span class="line">Attached Process          ffffe78b0b076040       Image:         System</span><br><span class="line">Wait Start TickCount      0              Ticks: 28939 (0:00:07:32.171)</span><br><span class="line">Context Switch Count      50535          IdealProcessor: 1             </span><br><span class="line">UserTime                  00:00:00.000</span><br><span class="line">KernelTime                00:07:17.718</span><br><span class="line">Win32 Start Address nt!KiIdleLoop (0xfffff807531f8ce0)</span><br><span class="line">Stack Init ffffa18350229c90 Current ffffa18350229c20</span><br><span class="line">Base ffffa1835022a000 Limit ffffa18350224000 Call 0000000000000000</span><br><span class="line">Priority 0 BasePriority 0 PriorityDecrement 0 IoPriority 0 PagePriority 0</span><br><span class="line">Child-SP          RetAddr               : Args to Child                                                           : Call Site</span><br><span class="line">ffffa183`50229c60 00000000`00000000     : ffffa183`5022a000 ffffa183`50224000 00000000`00000000 00000000`00000000 : nt!KiIdleLoop+0x54</span><br></pre></td></tr></table></figure>
+
+<p>例如查看该空闲进程回溯栈：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1: kd&gt; .process /r /p fffff80753b24a00</span><br><span class="line">Implicit process is now fffff807`53b24a00</span><br><span class="line">.cache forcedecodeuser done</span><br><span class="line">Loading User Symbols</span><br><span class="line">1: kd&gt; knc</span><br><span class="line"> # Child-SP          RetAddr               Call Site</span><br><span class="line">00 ffffd701`4b8bfde8 fffff807`53293972     nt!DbgBreakPointWithStatus</span><br><span class="line">01 ffffd701`4b8bfdf0 fffff807`53287427     nt!KdCheckForDebugBreak+0x112216</span><br><span class="line">02 ffffd701`4b8bfe20 fffff807`53126853     nt!KeAccumulateTicks+0x15e377</span><br><span class="line">03 ffffd701`4b8bfe80 fffff807`5312633a     nt!KeClockInterruptNotify+0x453</span><br><span class="line">04 ffffd701`4b8bff30 fffff807`5302ecd5     nt!HalpTimerClockIpiRoutine+0x1a</span><br><span class="line">05 ffffd701`4b8bff60 fffff807`531f6cba     nt!KiCallInterruptServiceRoutine+0xa5</span><br><span class="line">06 ffffd701`4b8bffb0 fffff807`531f7227     nt!KiInterruptSubDispatchNoLockNoEtw+0xfa</span><br><span class="line">07 ffffa183`50229510 fffff807`531f100f     nt!KiInterruptDispatchNoLockNoEtw+0x37</span><br><span class="line">08 ffffa183`502296a8 fffff807`5318d02e     nt!HalProcessorIdle+0xf</span><br><span class="line">09 ffffa183`502296b0 fffff807`53128246     nt!PpmIdleGuestExecute+0xe</span><br><span class="line">0a ffffa183`502296f0 fffff807`53127004     nt!PpmIdleExecuteTransition+0x10c6</span><br><span class="line">0b ffffa183`50229af0 fffff807`531f8d34     nt!PoIdle+0x374</span><br></pre></td></tr></table></figure>
+
+<p><code>nt!PoIdle</code>是电源执行体Power为空闲线程设计的工作函数，一般调用CPU处理器电源管理PPM模块进入省电模式，其下面的<code>nt!KiIdleLoop</code>为空闲线程入口和主函数。PPM模块导出一系列函数供<code>nt!PpmIdleExecuteTransition</code>调用。CPU在空闲线程中执行时可能用<code>nt!KiRetireDpcList</code>执行挂在延迟过程调用DPC队伍里的任务。</p>
+<h2 id="系统进程"><a href="#系统进程" class="headerlink" title="系统进程"></a>系统进程</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">1: kd&gt; !process 4 1</span><br><span class="line">Searching for Process with Cid == 4</span><br><span class="line">PROCESS ffffe78b0b076040</span><br><span class="line">    SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000</span><br><span class="line">    DirBase: 001ad000  ObjectTable: ffff800d6f242e00  HandleCount: 1386.</span><br><span class="line">    Image: System</span><br><span class="line">    VadRoot ffffe78b0b067ce0 Vads 5 Clone 0 Private 22. Modified 4107. Locked 0.</span><br><span class="line">    DeviceMap ffff800d6f247840</span><br><span class="line">    Token                             ffff800d6f2557e0</span><br><span class="line">    ElapsedTime                       00:12:28.514 //约等于系统总运行时间</span><br><span class="line">    UserTime                          00:00:00.000</span><br><span class="line">    KernelTime                        00:00:02.875</span><br><span class="line">    QuotaPoolUsage[PagedPool]         0</span><br><span class="line">    QuotaPoolUsage[NonPagedPool]      272</span><br><span class="line">    Working Set Sizes (now,min,max)  (53, 50, 450) (212KB, 200KB, 1800KB)</span><br><span class="line">    PeakWorkingSetSize                219</span><br><span class="line">    VirtualSize                       3 Mb</span><br><span class="line">    PeakVirtualSize                   13 Mb</span><br><span class="line">    PageFaultCount                    1734</span><br><span class="line">    MemoryPriority                    BACKGROUND</span><br><span class="line">    BasePriority                      8</span><br><span class="line">    CommitCharge                      40</span><br></pre></td></tr></table></figure>
+
+<p>一些常见的高CPU时间的系统线程有：管理GPU内存的VidMM线程，工作函数<code>dxgmms2!VidMmWorkerThreadProc</code>；调度GPU任务的VidSch线程，工作函数<code>dxgmms2!VidSchiWorkerThread</code>，其内调用<code>dxgmms2!VidsSchiRun_PriorityTable</code>；内存管理器工作集平衡线程，工作函数<code>KeBalanceSetManager</code>扫描每个进程页表，必要时把暂时不用的内存也交换到虚拟内存；内存管理器清零线程，工作函数<code>ZeroPageThread</code>，把需要的内存页清零。</p>
+<h2 id="NTDLL-DLL"><a href="#NTDLL-DLL" class="headerlink" title="NTDLL.DLL"></a>NTDLL.DLL</h2><p>映像加载器LDR是NTDLL.DLL的一部分，其负责在进程空间创建，即形成初始线程后，用异步过程调用APC机制让新线程在用户空间运行。Ldr前缀函数为接口函数，Ldrp前缀函数为内部函数。其中<code>ntdll!LdrInitializeThunk</code>是CPU从内核空间切换到用户空间的着陆点，<code>ntdll!LdrpInitializeProcess</code>是执行进程初始化的核心函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0:000&gt; k</span><br><span class="line"> # Child-SP          RetAddr               Call Site</span><br><span class="line">00 00000000`0063f370 00007ffd`9ec86351     ntdll!LdrpDoDebuggerBreak+0x30</span><br><span class="line">01 00000000`0063f3b0 00007ffd`9ec79b9e     ntdll!LdrpInitializeProcess+0x1cf9</span><br><span class="line">02 00000000`0063f780 00007ffd`9ec23f33     ntdll!_LdrpInitialize+0x55c32</span><br><span class="line">03 00000000`0063f800 00007ffd`9ec23e5e     ntdll!LdrpInitializeInternal+0x6b</span><br><span class="line">04 00000000`0063fa80 00000000`00000000     ntdll!LdrInitializeThunk+0xe</span><br></pre></td></tr></table></figure>
+
+<p>Rtl开头的是运行时库函数，这类函数NTDLL.DLL中数量最多，达2000多个。</p>
+<h2 id="环境子系统"><a href="#环境子系统" class="headerlink" title="环境子系统"></a>环境子系统</h2><p>POSIX和OS&#x2F;2子系统已过时，Windows子系统在用户模式下主要结构有：</p>
+<table>
+<thead>
+<tr>
+<th>重要文件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CSRSS.EXE</td>
+<td>Windows子系统服务进程主程序</td>
+</tr>
+<tr>
+<td>ADVAPI32.DLL</td>
+<td>包含API：数据加密Crpt、用户账号管理Lsa 、注册表操作Reg、WMI、终端服务Wts</td>
+</tr>
+<tr>
+<td>GDI32.DLL</td>
+<td>包含图形文字绘制API入口，<code>TextOut</code>、<code>BitBlt</code>等</td>
+</tr>
+<tr>
+<td>KERNEL32.DLL</td>
+<td>包含API：进程线程管理如<code>CreateThread</code>、调试Debug、文件操作、内存分配Local或Global</td>
+</tr>
+<tr>
+<td>USER32.DLL</td>
+<td>包含窗口管理、消息处理、用户输入API，<code>EndDialog</code>、<code>BeginPaint</code>、<code>SetWindowPos</code>、<code>MessageBox</code>等</td>
+</tr>
+</tbody></table>
+<h2 id="原生进程"><a href="#原生进程" class="headerlink" title="原生进程"></a>原生进程</h2><p>不依赖任何子系统，通过特殊私有结构直接与内核交互的进程叫原生进程，常见的有磁盘检查程序autochk.exe、SMSS、CSRSS等，他们是标准的PE格式，但头信息Sybsystem字段为0001表示IMAGE_SUBSYSTEM_NATIVE。下面是个最简单原生进程的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VOID NTAPI <span class="title function_">NTProcessStartup</span><span class="params">(PSTARTUP_ARGUMENT pArgument)</span>&#123;</span><br><span class="line">    LONG nResult=<span class="number">0</span>;</span><br><span class="line">    NtDisplayString(<span class="string">&quot;Hello Native Process\n&quot;</span>);</span><br><span class="line">    NtTerminateProcess(NtCurrentProcess(),nResult);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对于SMSS进程的创建过程中<code>nt!Phase1Initialization</code>代表内核启动过程中执行体阶段1初始化，之后<code>nt!StartFirstUserProcess</code>启动第一个用户进程，即SMSS是NT启动过程第一个EXE方式创建的进程，最后<code>nt!MmCreateProcessAddressSpace</code>创建进程地址空间。对于SMSS创建磁盘检查进程autochk.exe时，最开始<code>smss!NtProcessStartupW</code>为SMSS入口，然后<code>smss!SmpLoadDataFromRegistry</code>读取注册表，其次用<code>smss!SmpExecuteCommand</code>执行HKLM\System\CurrentControlSet\Control\Session Manager\BootExecute表键指定的程序。</p>
+<p>系统启动后，SMSS内部运行两个线程，一个主线程用<code>NtWaitForMultipleObjects</code>等待CSRSS和WinLogon，这俩意外退出时触发蓝屏；另一个线程用<code>NtWaitForWorkViaWorkerFactory</code>等待登录会话有关任务。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://Monoceros.github.io">Monoceros406</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://monoceros.github.io/2024/07/20/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6/">http://monoceros.github.io/2024/07/20/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Monoceros.github.io" target="_blank">The Blog of Monoceros406</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/07/18/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/" title="Windows软件调试初探-进程与线程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Windows软件调试初探-进程与线程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/11/16/Angr%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/" title="Angr做题笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-16</div><div class="title">Angr做题笔记</div></div></a></div><div><a href="/2023/10/29/Angr%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E7%AC%94%E8%AE%B0/" title="Angr符号执行笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-29</div><div class="title">Angr符号执行笔记</div></div></a></div><div><a href="/2023/11/09/C-%E7%97%85%E6%AF%92%E6%8A%80%E6%9C%AF/" title="C++病毒技术"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-09</div><div class="title">C++病毒技术</div></div></a></div><div><a href="/2023/11/15/CvxPy%E6%95%B4%E6%95%B0%E8%A7%84%E5%88%92%E7%AC%94%E8%AE%B0/" title="CvxPy整数规划笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-15</div><div class="title">CvxPy整数规划笔记</div></div></a></div><div><a href="/2023/10/21/IDA%E5%9C%A8Kali-Linux%E4%B8%8B%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%AC%94%E8%AE%B0/" title="IDA在Kali Linux下的远程动态调试笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-21</div><div class="title">IDA在Kali Linux下的远程动态调试笔记</div></div></a></div><div><a href="/2023/10/29/IDA%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B/" title="IDA脚本编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-29</div><div class="title">IDA脚本编程</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Monoceros406</div><div class="author-info__description">智邮普创工作室安全组/Nepnep联合战队</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">250</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Monoceros406"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Monoceros406" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:monoceros406@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">暂无公告</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">Windows软件调试初探-架构和系统部件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%A7%88"><span class="toc-number">1.1.</span> <span class="toc-text">系统概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E5%92%8CHAL%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.</span> <span class="toc-text">内核和HAL模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">系统进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NTDLL-DLL"><span class="toc-number">1.4.</span> <span class="toc-text">NTDLL.DLL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.5.</span> <span class="toc-text">环境子系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%94%9F%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.6.</span> <span class="toc-text">原生进程</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/20/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6/" title="Windows软件调试初探-架构和系统部件">Windows软件调试初探-架构和系统部件</a><time datetime="2024-07-20T00:21:55.000Z" title="发表于 2024-07-20 08:21:55">2024-07-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/18/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/" title="Windows软件调试初探-进程与线程">Windows软件调试初探-进程与线程</a><time datetime="2024-07-18T02:03:59.000Z" title="发表于 2024-07-18 10:03:59">2024-07-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/14/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93/" title="WindowsAPI查缺补漏-动态链接库">WindowsAPI查缺补漏-动态链接库</a><time datetime="2024-07-14T07:41:58.000Z" title="发表于 2024-07-14 15:41:58">2024-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/13/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-%E5%89%AA%E8%B4%B4%E6%9D%BF/" title="WindowsAPI查缺补漏-剪贴板">WindowsAPI查缺补漏-剪贴板</a><time datetime="2024-07-13T08:21:18.000Z" title="发表于 2024-07-13 16:21:18">2024-07-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/08/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-%E8%BF%9B%E7%A8%8B/" title="WindowsAPI查缺补漏-进程">WindowsAPI查缺补漏-进程</a><time datetime="2024-07-08T10:28:14.000Z" title="发表于 2024-07-08 18:28:14">2024-07-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Monoceros406</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div class="docsearch-wrap"><div id="docsearch" style="display:none"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css/dist/style.min.css"/><script src="https://cdn.jsdelivr.net/npm/@docsearch/js/dist/umd/index.min.js"></script><script>(() => {
+  docsearch(Object.assign({
+    appId: '',
+    apiKey: '',
+    indexName: '',
+    container: '#docsearch',
+  }, null))
+
+  const handleClick = () => {
+    document.querySelector('.DocSearch-Button').click()
+  }
+
+  const searchClickFn = () => {
+    btf.addEventListenerPjax(document.querySelector('#search-button > .search'), 'click', handleClick)
+  }
+
+  searchClickFn()
+  window.addEventListener('pjax:complete', searchClickFn)
+})()</script></div></div></body></html>
