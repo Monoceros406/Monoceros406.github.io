@@ -1,0 +1,525 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>WindowsAPI查缺补漏-INI配置文件与注册表操作 | The Blog of Monoceros406</title><meta name="author" content="Monoceros406"><meta name="copyright" content="Monoceros406"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="WindowsAPI查缺补漏-INI配置文件与注册表操作碎碎念INI文件即初始化文件，如Windows目录中Win.ini保存桌面设置和与应用程序运行有关信息，System.ini保存于硬件配置有关的信息，还有Control.ini等，但他们被映射到注册表HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Current Version\IniFile">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WindowsAPI查缺补漏-INI配置文件与注册表操作">
+<meta property="og:url" content="http://monoceros.github.io/2024/07/21/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-INI%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%8E%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="The Blog of Monoceros406">
+<meta property="og:description" content="WindowsAPI查缺补漏-INI配置文件与注册表操作碎碎念INI文件即初始化文件，如Windows目录中Win.ini保存桌面设置和与应用程序运行有关信息，System.ini保存于硬件配置有关的信息，还有Control.ini等，但他们被映射到注册表HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Current Version\IniFile">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://monoceros.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2024-07-21T11:49:38.000Z">
+<meta property="article:modified_time" content="2024-07-22T07:09:10.102Z">
+<meta property="article:author" content="Monoceros406">
+<meta property="article:tag" content="逆向工程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://monoceros.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/avatar.jpg"><link rel="canonical" href="http://monoceros.github.io/2024/07/21/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-INI%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%8E%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%93%8D%E4%BD%9C/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'WindowsAPI查缺补漏-INI配置文件与注册表操作',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-22 15:09:10'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">253</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="The Blog of Monoceros406"><span class="site-name">The Blog of Monoceros406</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">WindowsAPI查缺补漏-INI配置文件与注册表操作</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-21T11:49:38.000Z" title="发表于 2024-07-21 19:49:38">2024-07-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-22T07:09:10.102Z" title="更新于 2024-07-22 15:09:10">2024-07-22</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="WindowsAPI查缺补漏-INI配置文件与注册表操作"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="WindowsAPI查缺补漏-INI配置文件与注册表操作"><a href="#WindowsAPI查缺补漏-INI配置文件与注册表操作" class="headerlink" title="WindowsAPI查缺补漏-INI配置文件与注册表操作"></a>WindowsAPI查缺补漏-INI配置文件与注册表操作</h1><h2 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h2><p>INI文件即初始化文件，如Windows目录中Win.ini保存桌面设置和与应用程序运行有关信息，System.ini保存于硬件配置有关的信息，还有Control.ini等，但他们被映射到注册表HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Current Version\IniFileMapping中。单个INI文件大小不得超过64KB，注释以“;”开头且必须独占一行。键名不能存在“;”但键值可存在，键名不能为多行文本。</p>
+<p>NT系统注册表由Windows\system32\Config目录中多个文件构成，文件运行时这些文件被系统独占，无任何权限（甚至是读），只能通过Windows提供的接口进行操作。常见键值数据类型有：</p>
+<table>
+<thead>
+<tr>
+<th>键值数据类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>REG_SZ</td>
+<td></td>
+</tr>
+<tr>
+<td>REG_DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td>REG_QWORD</td>
+<td></td>
+</tr>
+<tr>
+<td>REG_BINARY</td>
+<td></td>
+</tr>
+<tr>
+<td>REG_MULTI_SZ</td>
+<td>字符串序列，每个字符串以1个\0结尾，最后一个以2个\0结尾</td>
+</tr>
+<tr>
+<td>REG_EXPAND_SZ</td>
+<td>包含对环境变量的为扩展引用的字符串</td>
+</tr>
+<tr>
+<td>REG_DWORD_LITTLE_ENDIAN</td>
+<td></td>
+</tr>
+<tr>
+<td>REG_DWORD_BIG_ENDIAN</td>
+<td></td>
+</tr>
+<tr>
+<td>REG_QWORD_LITTLE_ENDIAN</td>
+<td></td>
+</tr>
+<tr>
+<td>REG_LINK</td>
+<td>包含符号链接的目标路径的字符串</td>
+</tr>
+<tr>
+<td>REG_NONE</td>
+<td>没定义的</td>
+</tr>
+</tbody></table>
+<p>注册表中有5个根键，其中HKEY_LOCAL_MACHINE和HEKY_USERS为两个大根键，其他根键都由他俩映射出来，如HEKY_CLASSES_ROOT是HEKY_LOCAL_MACHINE\SOFTWARE\Classes子键的映射。每个根键介绍有：</p>
+<table>
+<thead>
+<tr>
+<th>根键</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HKEY_LOCAL_MACHINE</td>
+<td>系统和软件的设置，针对所有Windows系统用户</td>
+</tr>
+<tr>
+<td>HKEY_USERS</td>
+<td>默认用户、当前登录用户与软件等信息。如未来将被创建的新用户根键默认用户.DEFAULT子键配置信息生成自己的配置文件，包括环境、屏幕、声音等</td>
+</tr>
+<tr>
+<td>HKEY_CLASSES_ROOT</td>
+<td>系统中所有数据文件信息，主要为不同文件名后缀文件和与之关联的应用程序。</td>
+</tr>
+<tr>
+<td>HKEY_CURRENT_USER</td>
+<td>当前用户信息</td>
+</tr>
+<tr>
+<td>HKEY_CURRENT_CONFIG</td>
+<td>硬件配置文件，很少使用</td>
+</tr>
+</tbody></table>
+<p>键值数据不要大于2KB，否则影响效率。</p>
+<h2 id="INI配置文件"><a href="#INI配置文件" class="headerlink" title="INI配置文件"></a>INI配置文件</h2><h3 id="WritePrivateProfileString"><a href="#WritePrivateProfileString" class="headerlink" title="WritePrivateProfileString"></a>WritePrivateProfileString</h3><p>在指定INI文件指定小节创建、更新或删除键值对，或删除整个小节：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL WINAPI <span class="title">WritePrivateProfileString</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpAppName, <span class="comment">//小节名字符串 不区分大小写</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpKeyName, <span class="comment">//键名字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCSTR lpString, <span class="comment">//键值字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpFileName <span class="comment">//INI文件名称字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>当lpAppName或lpKeyName不存在则自动创建该小节&#x2F;键名。lpKeyName为NULL则删除lpAppName指定的小节。lpString为NULL则删除lpKeyName指定键。lpFileName文件不存在自动创建，但指定目录必须存在，不含完整路径时从Windows目录中搜索。</p>
+<h3 id="GetPrivateProfileString"><a href="#GetPrivateProfileString" class="headerlink" title="GetPrivateProfileString"></a>GetPrivateProfileString</h3><p>获取指定INI文件指定小节键名对应的键值字符串，还可以枚举指定INI文件中所有小节名称，还可以枚举指定INI文件指定小节名称中所有键名。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">DWORD WINAPI <span class="title">GetPrivateProfileString</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpAppName, <span class="comment">//小节名称字符串 不区分大小写</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpKeyName, <span class="comment">//键名字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpDefault, <span class="comment">//默认字符串 可NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_ LPTSTR lpReturnedString, <span class="comment">//接收获取到的字符串缓冲区指针</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD nSize, <span class="comment">//lpReturnedString指向缓冲区大小 单位字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpFileName <span class="comment">//INI文件名称字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>当lpAppName为NULL时将INI中所有小节名复制到lpReturnedString缓冲区中，每个小节名后以0结尾，最后一个小节名后有2个0。当lpKeyName为NULL时将指定节中所有键名复制到lpReturnedString缓冲区中，每个键名后以0结尾，最后一个键名后有2个0。当INI中没有lpKeyName时将lpDefault复制到lpReturnedString缓冲区。lpFileName如不包含完整路径则在Windows目录中搜索。</p>
+<p>返回复制到缓冲区中字符数，不含终止空字符。求键值时缓冲区大小不足则返回nSize-1。枚举时缓冲区大小不足返回nSize-2。</p>
+<h3 id="GetPrivateProfileInt"><a href="#GetPrivateProfileInt" class="headerlink" title="GetPrivateProfileInt"></a>GetPrivateProfileInt</h3><p>同上，UINT型键值：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">UINT WINAPI <span class="title">GetPrivateProfileInt</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpAppName,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpKeyName,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ INT nDefault,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpFileName</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="GetPrivateProfileSectionNames"><a href="#GetPrivateProfileSectionNames" class="headerlink" title="GetPrivateProfileSectionNames"></a>GetPrivateProfileSectionNames</h3><p>枚举指定INI中所有小节名称，用法同<code>GetPrivateProfileString</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">DWORD WINAPI <span class="title">GetPrivateProfileSectionNames</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_ LPTSTR lpszReturnBuffer,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD nSize,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpFileName</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="GetPrivateProfileSection"><a href="#GetPrivateProfileSection" class="headerlink" title="GetPrivateProfileSection"></a>GetPrivateProfileSection</h3><p>枚举指定INI文件指定小节中所有键值对，用法同<code>GetPrivateProfileString</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">DWORD WINAPI <span class="title">GetPrivateProfileSection</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpAppName,</span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_ LPTSTR lpReturnedString,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD nSize,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpFileName</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="WritePrivateProfileSection"><a href="#WritePrivateProfileSection" class="headerlink" title="WritePrivateProfileSection"></a>WritePrivateProfileSection</h3><p>向指定INI指定小节批量写入键值对：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL WINAPI <span class="title">WritePrivateProfileSection</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpAppName,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpString,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpFileName</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>原键值对将被全部覆盖删除，lpString中每个键值以0结尾，最后一个键值对以2个0结尾。lpString理所当然的最大只能64KB。</p>
+<h2 id="注册表操作"><a href="#注册表操作" class="headerlink" title="注册表操作"></a>注册表操作</h2><h3 id="RegOpenKeyEx"><a href="#RegOpenKeyEx" class="headerlink" title="RegOpenKeyEx"></a>RegOpenKeyEx</h3><p>打开一个子键并获取一个子键句柄：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegOpenKeyEx</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//父键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPCTSTR lpSubKey, <span class="comment">//子键名称字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD ulOptions, <span class="comment">//通常0</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ REGSAM samDesired, <span class="comment">//子键打开方式 即访问权限</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_ PHKEY phkResult <span class="comment">//返回打开的子键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS</span></span><br></pre></td></tr></table></figure>
+
+<p>lpSubKey子键可以是多层目录，hKey为根键时用常量HKEY_LOCAL_MACHINE等。sammDesired有：</p>
+<table>
+<thead>
+<tr>
+<th>枚举值</th>
+<th>访问权限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KEY_QUERY_VALUE</td>
+<td>查询键值项数据</td>
+</tr>
+<tr>
+<td>KEY_CREATE_SUB_KEY</td>
+<td>创建下一层子键</td>
+</tr>
+<tr>
+<td>KEY_ENUMERATE_SUB_KEYS</td>
+<td>枚举子键</td>
+</tr>
+<tr>
+<td>KEY_NOTIFY</td>
+<td>子键及下面子键发生更改时接收到通知</td>
+</tr>
+<tr>
+<td>KEY_SET_VALUE</td>
+<td>创建、修改和删除键值项</td>
+</tr>
+<tr>
+<td>KEY_READ&#x2F;KEY_EXECUTE</td>
+<td>STANDARD_RIGHTS_READ、KEY_QUERY_VALUE、KEY_ENUMERATE_SUB_KEYS、KEY_NOTIFY</td>
+</tr>
+<tr>
+<td>KEY_WRITE</td>
+<td>STANDARD_RIGHTS_WRITE、KEY_SET_VALUE、KEY_CREATE_SUB_KEY</td>
+</tr>
+<tr>
+<td>KEY_WOW64_32KEY</td>
+<td>应用程序在32位注册表视图上运行</td>
+</tr>
+<tr>
+<td>KEY_WOW64_64KEY</td>
+<td>应用程序在64位注册表视图上运行</td>
+</tr>
+<tr>
+<td>KEY_ALL_ACCESS</td>
+<td>STANDARD_RIGHTS_REQUIRED、KEY_QUERY_VALUE、KEY_SET_VALUE、KEY_CREATE_SUB_KEY、KEY_ENUMERATE_SUB_KEYS、KEY_NOTIFY、KEY_CREATE_LINK</td>
+</tr>
+</tbody></table>
+<h3 id="RegCloseKey"><a href="#RegCloseKey" class="headerlink" title="RegCloseKey"></a>RegCloseKey</h3><p>关闭子键句柄：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegCloseKey</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey <span class="comment">//子键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="RegCreateKeyEx"><a href="#RegCreateKeyEx" class="headerlink" title="RegCreateKeyEx"></a>RegCreateKeyEx</h3><p>创建一个子键并返回子键句柄，已存在则打开，一些参数同<code>RegOpenKeyEx</code>。注意不能在两个大根键下创建直系子键。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegCreateKeyEx</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpSubKey,</span></span></span><br><span class="line"><span class="params"><span class="function">	_Reserved_ DWORD Reserved, <span class="comment">//必须0</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPTSTR lpClass, <span class="comment">//用户定义子键类名 通常NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD dwOptions, <span class="comment">//子键创建选项 通常REG_OPTION_NON_VOLATILE</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ REGSAM samDesired,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes, <span class="comment">//通常NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_ PHKEY phkResult,</span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpdwDisposition <span class="comment">//返回函数处理结果</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>dwOptions有：</p>
+<table>
+<thead>
+<tr>
+<th>枚举值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>REG_OPTION_NON_VOLATILE</td>
+<td>子键在系统重启时保留在注册表中</td>
+</tr>
+<tr>
+<td>REG_OPTION_VOLATILE</td>
+<td>子键保存在内存中，系统重启即消失</td>
+</tr>
+<tr>
+<td>REG_OPTION_BACKUP_RESTORE</td>
+<td>忽略samDesired，尝试用备份或还原子键所需访问权限打开子键</td>
+</tr>
+</tbody></table>
+<p>lpdwDisposition有：</p>
+<table>
+<thead>
+<tr>
+<th>枚举值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>REG_CREATED_NEW_KEY</td>
+<td>子键不存在且已经被创建</td>
+</tr>
+<tr>
+<td>REG_OPENED_EXISTING_KEY</td>
+<td>子键已存在，直接打开的</td>
+</tr>
+</tbody></table>
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HKEY hKey;</span><br><span class="line">LPCTSTR lpSubKey = <span class="built_in">TEXT</span>(<span class="string">&quot;Software\\INIDemo&quot;</span>);</span><br><span class="line">LONG lRet;</span><br><span class="line">lRet = <span class="built_in">RegCreateKeyEx</span>(HKEY_CURRENT_USER, lpSubKey, <span class="number">0</span>, <span class="literal">NULL</span>, REG_OPTION_NON_VOLATILE, KEY_WRITE, <span class="literal">NULL</span>, &amp;hKey, <span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span> (lRet != ERROR_SUCCESS) &#123;</span><br><span class="line">	<span class="built_in">MessageBox</span>(hwndDlg, <span class="built_in">TEXT</span>(<span class="string">&quot;创建或打开子键失败！&quot;</span>), <span class="built_in">TEXT</span>(<span class="string">&quot;提示&quot;</span>), MB_OK);</span><br><span class="line">	<span class="keyword">return</span> FALSE;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RegDeleteKey"><a href="#RegDeleteKey" class="headerlink" title="RegDeleteKey"></a>RegDeleteKey</h3><p>删除一个子键和该子键中所有键值项，要删除的子键下必须无子键。要递归删除子键用<code>RegDeleteTree</code>或<code>SHDeleteKey</code>，这俩与<code>RegDeleteKey</code>参数完全一样。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegDeleteKey</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//父键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ LPCTSTR lpSubKey <span class="comment">//子键名称字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功ERROR_SUCCESS</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="RegSetValueEx"><a href="#RegSetValueEx" class="headerlink" title="RegSetValueEx"></a>RegSetValueEx</h3><p>在指定子键中创建或设置键值项：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegSetValueEx</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//子键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPCTSTR lpValueName, <span class="comment">//键名字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Reserved_ DWORD Reserved, <span class="comment">//必须0</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD dwType, <span class="comment">//lpData指向的数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ CONST PBYTE lpData, <span class="comment">//要存储的键值数据</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD cbData <span class="comment">//lpData指向数据大小 单位字节</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS</span></span><br></pre></td></tr></table></figure>
+
+<p>lpValueName不存在则创建，已存在则更改键值，为空字符或NULL则创建或设置子键默认键。lpData要求包含1个或2个终止\0。</p>
+<h3 id="RegQueryValueEx"><a href="#RegQueryValueEx" class="headerlink" title="RegQueryValueEx"></a>RegQueryValueEx</h3><p>获取指定子键中指定键名的键值数据或键值数据类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegQueryValueEx</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//子键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPCTSTR lpValueName, <span class="comment">//键名字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Reserved_ LPDWORD lpReserved, <span class="comment">//必须NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpType, <span class="comment">//返回键值数据的数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPBYTE lpData, <span class="comment">//返回键值数据的缓冲区指针</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Inout_opt_ LPDWORD lpcbData <span class="comment">//指定缓冲区大小 单位字节 当作返回值为复制到lpData数据大小</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS lpData缓冲区过小返回ERROR_MORE_DATA且所需缓冲区大小在lpcbData返回</span></span><br></pre></td></tr></table></figure>
+
+<p>hKey为空字符串或NULL表示子键中默认键。</p>
+<h3 id="RegGetValue"><a href="#RegGetValue" class="headerlink" title="RegGetValue"></a>RegGetValue</h3><p>同<code>RegQueryValueEx</code>，但不需要子键句柄：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegGetValue</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//父键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPCTSTR lpSubKey, <span class="comment">//子键名字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPCTSTR lpValueName, <span class="comment">//键名字符串 为空字符串或NULL表示默认键</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ DWORD dwFlags, <span class="comment">//限制要查询的键值数据类型标志 一般RRT_RT_ANY</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpType, <span class="comment">//返回键值数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ PVOID pvData, <span class="comment">//返回键值数据的缓冲区指针</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Inout_opt_ LPDWORD lpcbData <span class="comment">//缓冲区大小 单位字节 当作返回值为复制到pvData数据大小</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS pvData不够大返回ERROR_MORE_DATA且所需大小在lpcbData返回</span></span><br></pre></td></tr></table></figure>
+
+<p>dwFlags可取值有：</p>
+<table>
+<thead>
+<tr>
+<th>枚举值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RRT_RT_ANY</td>
+<td></td>
+</tr>
+<tr>
+<td>RRT_RT_REG_SZ</td>
+<td></td>
+</tr>
+<tr>
+<td>RRF_RT_REG_DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td>RRF_RT_REG_QWORD</td>
+<td></td>
+</tr>
+<tr>
+<td>RRT_RT_REG_BINARY</td>
+<td></td>
+</tr>
+<tr>
+<td>RRT_RT_DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td>RRT_RT_QWORD</td>
+<td></td>
+</tr>
+<tr>
+<td>RRT_RT_REG_EXPAND_SZ</td>
+<td></td>
+</tr>
+<tr>
+<td>RRT_RT_REG_MULTI_SZ</td>
+<td></td>
+</tr>
+<tr>
+<td>RRF_RT_REG_NONE</td>
+<td></td>
+</tr>
+<tr>
+<td>RRF_NOEXPAND</td>
+<td>数据类型为REG_EXPAND_SZ则不要自动扩展环境变量字符串</td>
+</tr>
+<tr>
+<td>RRF_ZEROONFAILURE</td>
+<td>当pvData不为NULL则函数执行失败时将缓冲区清零</td>
+</tr>
+<tr>
+<td>RRF_SUBKEY_WOW6464KEY</td>
+<td>当lpSubKey不为NULL则打开lpSubKey指定有KEY_WOW64_64KEY访问权限的子键</td>
+</tr>
+<tr>
+<td>RRF_SUBKEY_WOW6432KEY</td>
+<td>当lpSubKey不为NULL则打开lpSubKey指定有KEY_WOW64_32KEY访问权限的子键</td>
+</tr>
+</tbody></table>
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">RegGetValue</span>(HKEY_CURRENT_USER, lpSubKey, lpValueNameX, RRF_RT_ANY, <span class="literal">NULL</span>, &amp;dwX, &amp;dwcbData);</span><br></pre></td></tr></table></figure>
+
+<h3 id="RegDeleteValue"><a href="#RegDeleteValue" class="headerlink" title="RegDeleteValue"></a>RegDeleteValue</h3><p>删除指定子键中指定键值项：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegDeleteValue</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//子键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_opt_ LPCTSTR lpValueName <span class="comment">//键名字符串</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="RegEnumKeyEx"><a href="#RegEnumKeyEx" class="headerlink" title="RegEnumKeyEx"></a>RegEnumKeyEx</h3><p>枚举指定子键下所有子键名称、类类型和最后写入时间：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG <span class="title">RegEnumKeyEx</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//子键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD dwIndex, <span class="comment">//子键下子键索引 初始0</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPTSTR lpName, <span class="comment">//返回子键名称 包括终止空字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Inout_ LPDWORD lpcchName, <span class="comment">//lpName缓冲区大小 单位字符 返回实际大小但不含终止空字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Reserved_ LPDWORD lpReserved, <span class="comment">//必须NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPTSTR lpClass, <span class="comment">//返回子键类名 通常NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Inout_opt_ LPDWORD lpcchClass, <span class="comment">//lpClass缓冲区大小 单位字符 返回实际大小但不含终止空字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ PFILETIME lpftLastWriteTime <span class="comment">//子键最后写入时间</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS 缓冲区太小返回ERROR_MORE_DATA</span></span><br></pre></td></tr></table></figure>
+
+<p>dwIndex枚举时循环调用，第一次设置为0，后续每次增加1，直到函数返回ERROR_NO_MORE_ITEMS。</p>
+<p>例如枚举方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">DWORD dwIndex;</span><br><span class="line">TCHAR szName[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">DWORD dwchName;</span><br><span class="line">dwIndex = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (TRUE) &#123;</span><br><span class="line">	dwchName = _countof(szName);</span><br><span class="line">	lRet = <span class="built_in">RegEnumKeyEx</span>(hKey, dwIndex, szName, &amp;dwchName, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span> (lRet == ERROR_NO_MORE_ITEMS)</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	dwIndex++;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RegEnumValue"><a href="#RegEnumValue" class="headerlink" title="RegEnumValue"></a>RegEnumValue</h3><p>枚举指定子键下所有键值项，部分参数同<code>RegEnumKeyEx</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegEnumValue</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HEKY hKey,</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ DWORD dwIndex,</span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_ LPTSTR lpValueName, <span class="comment">//返回键名 含终止空字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Inout_ LPDWORD lpcchValueName, <span class="comment">//lpValueName缓冲区大小 单位字符 返回实际大小</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Reserved_ LPDWORD lpReserved,</span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpType, <span class="comment">//返回键值数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPBYTE lpData, <span class="comment">//返回键值数据</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Inout_opt_ LPDWORD lpcbData <span class="comment">//lpData缓冲区大小 单位字节 返回实际大小</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS</span></span><br></pre></td></tr></table></figure>
+
+<p>缓冲区过小时函数返回ERROR_MOR_DATA，lpcbData指向变量中返回所需缓冲区大小。当lpData为NULL时表示获取所需缓冲区大小，单位字节，返回在lpcbData指向DWORD变量中，这时函数返回ERROR_SUCCESS。</p>
+<p>例如枚举方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">DWORD dwIndex;</span><br><span class="line">TCHAR szValueName[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">BYTE bData[<span class="number">512</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">DWORD dwchValueName, dwcbData;</span><br><span class="line">dwIndex = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (TRUE) &#123;</span><br><span class="line">	dwchValueName = _countof(szValueName);</span><br><span class="line">	dwcbData = <span class="built_in">sizeof</span>(bData);</span><br><span class="line">	lRet = <span class="built_in">RegEnumValue</span>(hKey, dwIndex, szValueName, &amp;dwchValueName, <span class="literal">NULL</span>, <span class="literal">NULL</span>, bData, &amp;dwcbData);</span><br><span class="line">	<span class="keyword">if</span> (lRet == ERROR_NO_MORE_ITEMS)</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	dwIndex++;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RegQueryInfoKey"><a href="#RegQueryInfoKey" class="headerlink" title="RegQueryInfoKey"></a>RegQueryInfoKey</h3><p>查询指定子键相关信息，如一个子键下子键数量、键值项数量、子键名称、键名字符串最大长度、键值数据最大长度等。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LONG WINAPI <span class="title">RegQueryInfoKey</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">	_In_ HKEY hKey, <span class="comment">//子键句柄</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPTSTR lpClass, <span class="comment">//返回子键类名</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Inout_opt_ LPDWORD lpcClass, <span class="comment">//lpClass缓冲区大小单位字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Reserved_ LPDWORD lpReserved, <span class="comment">//必须NULL</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpcSubKeys, <span class="comment">//返回hKey下所有子键数量</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpcMaxSubKeyLen, <span class="comment">//返回子键名称最大长度 按Unicode 不含终止字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpcMaxClassLen, <span class="comment">//返回子键类名最大长度 按Unicode 不含终止字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpcValues, <span class="comment">//返回hKey下所有键值项数量</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpcMaxValueNameLen, <span class="comment">//返回键名最大长度 按Unicode 不含终止字符</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpcMaxValueLen, <span class="comment">//返回键值数据最大长度 单位字节</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ LPDWORD lpcbSecurityDescriptor, <span class="comment">//返回hKey安全描述符大小 单位字节</span></span></span></span><br><span class="line"><span class="params"><span class="function">	_Out_opt_ PFILETIME lpftLastWriteTime <span class="comment">//返回hKey最后写入时间</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>; <span class="comment">//成功返回ERROR_SUCCESS</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="应用：程序开机自动运行"><a href="#应用：程序开机自动运行" class="headerlink" title="应用：程序开机自动运行"></a>应用：程序开机自动运行</h3><p>下面路径选一个子键创建键值项，键值数据为程序完整路径，选后两个路径只运行1次：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run</span><br><span class="line">HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce</span><br><span class="line">HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run</span><br><span class="line">HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HKEY hKey;</span><br><span class="line">LPCTSTR lpSubKey = <span class="built_in">TEXT</span>(<span class="string">&quot;Software\\Microsoft\\Windows\\CurrentVersion\\Run&quot;</span>);</span><br><span class="line">LPCTSTR lpValueName = <span class="built_in">TEXT</span>(<span class="string">&quot;INIDemo&quot;</span>);</span><br><span class="line">LPTSTR lpData = <span class="built_in">TEXT</span>(<span class="string">&quot;F:\\Source\\Windows\\Chapter7\\INIDemo\\Debug\\INIDemo.exe&quot;</span>);</span><br><span class="line">DWORD dwcbData = (_tcslen(lpData) + <span class="number">1</span>) * <span class="built_in">sizeof</span>(TCHAR);</span><br><span class="line"><span class="built_in">RegOpenKeyEx</span>(HKEY_LOCAL_MACHINE, lpSubKey, <span class="number">0</span>, KEY_WRITE, &amp;hKey);</span><br><span class="line"><span class="built_in">RegSetValueEx</span>(hKey, lpValueName, <span class="literal">NULL</span>, REG_SZ, (LPBYTE)lpData, dwcbData);</span><br><span class="line"><span class="built_in">RegCloseKey</span>(hKey);</span><br></pre></td></tr></table></figure>
+
+<p>注册表重定向不用管。</p>
+<h3 id="应用：文件关联程序"><a href="#应用：文件关联程序" class="headerlink" title="应用：文件关联程序"></a>应用：文件关联程序</h3><p>在注册表HKEY_CLASSES_ROOT根键下新建2个子键。第1个子键为“.扩展名”，该子键下设置一个默认键，默认键键值数据类型为REG_SZ，键值数据是根键下新建的第2个子键名。对于第2个子键，当默认动作是“打开”时继续在该子键中创建“shell\open\command”子键，该子键下设置默认键，键值数据类型是REG_SZ或REG_EXPAND_SZ，键值数据为可执行文件完整路径；当默认动作是“打印”时继续在该子键中创建“shell\print\command”子键，默认键设置为执行打印操作的可执行文件名。</p>
+<p>例如.txt文件用notepad.exe打开：HKEY_CLASSES_ROOT\.txt子键默认键键值为“txtfile”，HKEY_CLASSES_ROOT\txtfile\shell\open\command子键默认键键值为“%System Root%\system32\NOTEPAD.EXE %1”。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://Monoceros.github.io">Monoceros406</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://monoceros.github.io/2024/07/21/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-INI%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%8E%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%93%8D%E4%BD%9C/">http://monoceros.github.io/2024/07/21/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-INI%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%8E%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%93%8D%E4%BD%9C/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Monoceros.github.io" target="_blank">The Blog of Monoceros406</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/07/22/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" title="WindowsAPI查缺补漏-异常处理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">WindowsAPI查缺补漏-异常处理</div></div></a></div><div class="next-post pull-right"><a href="/2024/07/20/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6/" title="Windows软件调试初探-架构和系统部件"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Windows软件调试初探-架构和系统部件</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/11/16/Angr%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/" title="Angr做题笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-16</div><div class="title">Angr做题笔记</div></div></a></div><div><a href="/2023/10/29/Angr%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E7%AC%94%E8%AE%B0/" title="Angr符号执行笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-29</div><div class="title">Angr符号执行笔记</div></div></a></div><div><a href="/2023/11/09/C-%E7%97%85%E6%AF%92%E6%8A%80%E6%9C%AF/" title="C++病毒技术"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-09</div><div class="title">C++病毒技术</div></div></a></div><div><a href="/2023/11/15/CvxPy%E6%95%B4%E6%95%B0%E8%A7%84%E5%88%92%E7%AC%94%E8%AE%B0/" title="CvxPy整数规划笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-15</div><div class="title">CvxPy整数规划笔记</div></div></a></div><div><a href="/2023/10/21/IDA%E5%9C%A8Kali-Linux%E4%B8%8B%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%AC%94%E8%AE%B0/" title="IDA在Kali Linux下的远程动态调试笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-21</div><div class="title">IDA在Kali Linux下的远程动态调试笔记</div></div></a></div><div><a href="/2023/10/29/IDA%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B/" title="IDA脚本编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-29</div><div class="title">IDA脚本编程</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Monoceros406</div><div class="author-info__description">智邮普创工作室安全组/Nepnep联合战队</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">253</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Monoceros406"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Monoceros406" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:monoceros406@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">暂无公告</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-INI%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%8E%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">WindowsAPI查缺补漏-INI配置文件与注册表操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A2%8E%E7%A2%8E%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">碎碎念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#INI%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">INI配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WritePrivateProfileString"><span class="toc-number">1.2.1.</span> <span class="toc-text">WritePrivateProfileString</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GetPrivateProfileString"><span class="toc-number">1.2.2.</span> <span class="toc-text">GetPrivateProfileString</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GetPrivateProfileInt"><span class="toc-number">1.2.3.</span> <span class="toc-text">GetPrivateProfileInt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GetPrivateProfileSectionNames"><span class="toc-number">1.2.4.</span> <span class="toc-text">GetPrivateProfileSectionNames</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GetPrivateProfileSection"><span class="toc-number">1.2.5.</span> <span class="toc-text">GetPrivateProfileSection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WritePrivateProfileSection"><span class="toc-number">1.2.6.</span> <span class="toc-text">WritePrivateProfileSection</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.</span> <span class="toc-text">注册表操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RegOpenKeyEx"><span class="toc-number">1.3.1.</span> <span class="toc-text">RegOpenKeyEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegCloseKey"><span class="toc-number">1.3.2.</span> <span class="toc-text">RegCloseKey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegCreateKeyEx"><span class="toc-number">1.3.3.</span> <span class="toc-text">RegCreateKeyEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegDeleteKey"><span class="toc-number">1.3.4.</span> <span class="toc-text">RegDeleteKey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegSetValueEx"><span class="toc-number">1.3.5.</span> <span class="toc-text">RegSetValueEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegQueryValueEx"><span class="toc-number">1.3.6.</span> <span class="toc-text">RegQueryValueEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegGetValue"><span class="toc-number">1.3.7.</span> <span class="toc-text">RegGetValue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegDeleteValue"><span class="toc-number">1.3.8.</span> <span class="toc-text">RegDeleteValue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegEnumKeyEx"><span class="toc-number">1.3.9.</span> <span class="toc-text">RegEnumKeyEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegEnumValue"><span class="toc-number">1.3.10.</span> <span class="toc-text">RegEnumValue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RegQueryInfoKey"><span class="toc-number">1.3.11.</span> <span class="toc-text">RegQueryInfoKey</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%EF%BC%9A%E7%A8%8B%E5%BA%8F%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E8%BF%90%E8%A1%8C"><span class="toc-number">1.3.12.</span> <span class="toc-text">应用：程序开机自动运行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%EF%BC%9A%E6%96%87%E4%BB%B6%E5%85%B3%E8%81%94%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.3.13.</span> <span class="toc-text">应用：文件关联程序</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/22/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-%E6%9D%82%E8%B0%88/" title="WindowsAPI查缺补漏-杂谈">WindowsAPI查缺补漏-杂谈</a><time datetime="2024-07-22T12:36:50.000Z" title="发表于 2024-07-22 20:36:50">2024-07-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/22/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" title="WindowsAPI查缺补漏-异常处理">WindowsAPI查缺补漏-异常处理</a><time datetime="2024-07-22T07:21:08.000Z" title="发表于 2024-07-22 15:21:08">2024-07-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/21/WindowsAPI%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F-INI%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%B8%8E%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%93%8D%E4%BD%9C/" title="WindowsAPI查缺补漏-INI配置文件与注册表操作">WindowsAPI查缺补漏-INI配置文件与注册表操作</a><time datetime="2024-07-21T11:49:38.000Z" title="发表于 2024-07-21 19:49:38">2024-07-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/20/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E6%9E%B6%E6%9E%84%E5%92%8C%E7%B3%BB%E7%BB%9F%E9%83%A8%E4%BB%B6/" title="Windows软件调试初探-架构和系统部件">Windows软件调试初探-架构和系统部件</a><time datetime="2024-07-20T00:21:55.000Z" title="发表于 2024-07-20 08:21:55">2024-07-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/18/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/" title="Windows软件调试初探-进程与线程">Windows软件调试初探-进程与线程</a><time datetime="2024-07-18T02:03:59.000Z" title="发表于 2024-07-18 10:03:59">2024-07-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Monoceros406</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div class="docsearch-wrap"><div id="docsearch" style="display:none"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css/dist/style.min.css"/><script src="https://cdn.jsdelivr.net/npm/@docsearch/js/dist/umd/index.min.js"></script><script>(() => {
+  docsearch(Object.assign({
+    appId: '',
+    apiKey: '',
+    indexName: '',
+    container: '#docsearch',
+  }, null))
+
+  const handleClick = () => {
+    document.querySelector('.DocSearch-Button').click()
+  }
+
+  const searchClickFn = () => {
+    btf.addEventListenerPjax(document.querySelector('#search-button > .search'), 'click', handleClick)
+  }
+
+  searchClickFn()
+  window.addEventListener('pjax:complete', searchClickFn)
+})()</script></div></div></body></html>
