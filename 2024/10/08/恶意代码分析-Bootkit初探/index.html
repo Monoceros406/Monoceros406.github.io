@@ -1,0 +1,680 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>恶意代码分析-Bootkit初探 | The Blog of Monoceros406</title><meta name="author" content="Monoceros406"><meta name="copyright" content="Monoceros406"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="恶意代码分析-Bootkit初探碎碎念第一个Bootkit恶意软件为1971年的1971年的Creeper，在VAX PDP-10上的TENEX网络操作系统下运行的恶意软件，第一个杀毒软件Reaper就是专门删除Creeper而设计的。引导扇区感染者BSI是最早的Bootkit恶意软件之一，第一次被发现是在MS-DOS时代，它们感染磁盘引导扇区（第一个物理扇区）。 第一个感染Apple II的BS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="恶意代码分析-Bootkit初探">
+<meta property="og:url" content="http://monoceros.github.io/2024/10/08/%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-Bootkit%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="The Blog of Monoceros406">
+<meta property="og:description" content="恶意代码分析-Bootkit初探碎碎念第一个Bootkit恶意软件为1971年的1971年的Creeper，在VAX PDP-10上的TENEX网络操作系统下运行的恶意软件，第一个杀毒软件Reaper就是专门删除Creeper而设计的。引导扇区感染者BSI是最早的Bootkit恶意软件之一，第一次被发现是在MS-DOS时代，它们感染磁盘引导扇区（第一个物理扇区）。 第一个感染Apple II的BS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://monoceros.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2024-10-08T10:59:35.000Z">
+<meta property="article:modified_time" content="2024-10-08T11:00:12.017Z">
+<meta property="article:author" content="Monoceros406">
+<meta property="article:tag" content="逆向工程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://monoceros.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/avatar.jpg"><link rel="canonical" href="http://monoceros.github.io/2024/10/08/%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-Bootkit%E5%88%9D%E6%8E%A2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '恶意代码分析-Bootkit初探',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-08 19:00:12'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">291</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://t.alcy.cc/ycy')"><nav id="nav"><span id="blog-info"><a href="/" title="The Blog of Monoceros406"><span class="site-name">The Blog of Monoceros406</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">恶意代码分析-Bootkit初探</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-08T10:59:35.000Z" title="发表于 2024-10-08 18:59:35">2024-10-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-08T11:00:12.017Z" title="更新于 2024-10-08 19:00:12">2024-10-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="恶意代码分析-Bootkit初探"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="恶意代码分析-Bootkit初探"><a href="#恶意代码分析-Bootkit初探" class="headerlink" title="恶意代码分析-Bootkit初探"></a>恶意代码分析-Bootkit初探</h1><h2 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h2><p>第一个Bootkit恶意软件为1971年的1971年的Creeper，在VAX PDP-10上的TENEX网络操作系统下运行的恶意软件，第一个杀毒软件Reaper就是专门删除Creeper而设计的。引导扇区感染者BSI是最早的Bootkit恶意软件之一，第一次被发现是在MS-DOS时代，它们感染磁盘引导扇区（第一个物理扇区）。</p>
+<p>第一个感染Apple II的BSI病毒为Rich Skrenta的Elk Cloner病毒（1982~1983），比PC引导扇区病毒早了几年。下一个影响Apple II的BSI恶意软件是1989年的Load Runner，监听Control-Command-Reset触发的Apple reset命令来将其写入磁盘并实现恶意软件持久化。1986年出现第一个PC病毒Brain。在Windows操作系统引入和普及后BSI时代终结。</p>
+<p>绕过微软数字签名检查的所有已知技巧有4种。第一种在用户模式下运行，依靠内置的微软Windows方法来合法地禁用签名策略，操作系统提供一个接口以通过使用自定义证书来验证驱动程序的数字签名，从而暂时禁用驱动程序映像身份验证或启用测试签名。第二种利用系统内核漏洞或合法的第三方驱动程序的有效数字签名。第三种修改操作系统内核来禁用内核模式代码签名策略，这方法最常见。第四组损害系统固件，以在操作系统内核执行之前在目标系统上执行以禁用安全检查。</p>
+<p>Secure Boot保护功能是一种确保启动过程中涉及的组件完整性和安全标准，使得恶意代码不再针对引导程序，而是以系统固件为目标。</p>
+<p>首个新一代Bootkit恶意软件是eEye的PoC BootRoot，于2005年于拉斯维加斯举办的Black Hat会议上提出。有Derek Soeder和Ryan Permeh编写的BootRoot是网络驱动程序接口规范NDSI后门，首次证明原始Bootkit可用作攻击现代操作系统的模型。2007年发现Mebroot威胁，同年Black Hat会议上公布了vBootkit和Stoned两个PoC，表明通过修改引导扇区来攻击Windows Vista内核时可能的。</p>
+<p>一些PoC于真实Bootkit攻击的演变过程如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>PoC BootRoot</th>
+<th>对应的真实攻击</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eEye BootRoot 2005：第一个适用于Windows的基于MBR的Bootkit</td>
+<td>Mebroot 2007</td>
+</tr>
+<tr>
+<td>Vbootkit 2007：滥用Windows Vista的第一个Bootkit</td>
+<td>Mebratix 2008</td>
+</tr>
+<tr>
+<td>Vbootkit x64 2009：第一个绕过Windows 7数字签名检查的Bootkit</td>
+<td>Mebroot v2 2009</td>
+</tr>
+<tr>
+<td>Stoned 2009</td>
+<td>Olmarik(TDL4 ) 2010~2011</td>
+</tr>
+<tr>
+<td>Stoned x64 2011</td>
+<td>Olmasco(TDL4 modfication) 2011：首款基于VBR感染的Bootkit</td>
+</tr>
+<tr>
+<td>Evil Core 2011：一种使用对称多处理结构SMP启动到保护模式的Bootkit思路。</td>
+<td>Rovnix 2011：一种基于VBR感染进化的多态代码</td>
+</tr>
+<tr>
+<td>DeepBoot 2011：第一个将实模式切换为保护模式的Bootkit</td>
+<td>Mebromi 2011：对BIOS工具包的首次探索</td>
+</tr>
+<tr>
+<td>VGS 2012：第一个基于VGA概念的Bootkit</td>
+<td>Gapz 2012：VBR感染进化</td>
+</tr>
+<tr>
+<td>DreamBoot 2013：公开的第一个UEFI Bootkit概念</td>
+<td>OldBoot：针对Android的第一个Bootkit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Windows引导过程"><a href="#Windows引导过程" class="headerlink" title="Windows引导过程"></a>Windows引导过程</h2><p>现代引导过程一般流程如下，任何部分都可被Bootkit攻击，常见攻击目标有BIOS初始化、MBR和操作系统引导加载程序Bootloader。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>次序</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU实模式</td>
+<td>初始化BIOS</td>
+<td></td>
+<td>硬件</td>
+</tr>
+<tr>
+<td></td>
+<td>MBR</td>
+<td>BIOS服务</td>
+<td>硬件</td>
+</tr>
+<tr>
+<td></td>
+<td>Bootloader</td>
+<td>BIOS服务</td>
+<td>硬件</td>
+</tr>
+<tr>
+<td></td>
+<td>早期内核初始化</td>
+<td>BIOS服务</td>
+<td>硬件</td>
+</tr>
+<tr>
+<td>CPU保护模式</td>
+<td>初始化完整内核</td>
+<td></td>
+<td>硬件</td>
+</tr>
+<tr>
+<td></td>
+<td>首个用户模式</td>
+<td>内核服务</td>
+<td>硬件</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Windows Vista及更高版本的启动过程和所涉及组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BIOS启动代码-&gt;MBR-&gt;卷引导记录VBR和初始程序加载程序-&gt;bootmgr-&gt;winload.exe-&gt;内核映像和引导启动驱动程序</span><br></pre></td></tr></table></figure>
+<p>BIOS执行基本系统初始化和开机自检工作，确保关键系统硬件能正常工作。BIOS还提供了一个专门环境，其中包括与系统设备通信所需的基本服务。这种简化的I/O接口在预引导环境中可用，随后被操作系统的抽象用法所取代。Bootkit暴露许多用于执行磁盘I/O操作的入口点，通过<code>INT 13h</code>的特殊处理程序访问磁盘服务，以修改系统启动期间从硬盘驱动器读取的操作系统和引导组件来禁用或规避操作系统保护。接下来BIOS查找可引导的磁盘驱动器，该驱动器承载要加载的操作系统，可能是硬盘驱动器、USB驱动器或CD驱动器，一旦确定后BIOS引导代码将加载MBR。</p>
+<p>MBR结构包含硬盘驱动器分区和引导代码的信息，确定可引导硬盘驱动器的活动分区，包含要加载的操作系统实力。确定后MBR读取并执行其引导代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_MASTER_BOOT_RECORD</span> &#123;</span><br><span class="line">    BYTE bootCode[<span class="number">0x1BE</span>]; <span class="comment">//实际启动代码</span></span><br><span class="line">    MBR_PARTITION_TABLE_ENTRY partitionTable[<span class="number">4</span>];</span><br><span class="line">    USHORT mbrSignature; <span class="comment">//0xAA55 表示PC MBR格式</span></span><br><span class="line">&#125; MASTER_BOOT_RECORD, *PMASTER_BOOT_RECORD;</span><br></pre></td></tr></table></figure>
+<p>接下来MBR引导代码bootCode解析分区表partitionTable以查找活动分区，读取第一个扇区中卷引导记录VBR，并将控制权转移给他。</p>
+<p>分区表结构如下。任何情况只有一个分区被标记为活动状态，type标记分区类型如（EXTENDED MBR、FAT12、FAT16、FAT32、安装过程时可安装文件系统IFS、逻辑磁盘管理器LDM、NTFS、未使用0）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_MBR_PARTITION_TABLE_ENTRY</span> &#123;</span><br><span class="line">    BYTE status; <span class="comment">//活动状态 no=0 yes=128</span></span><br><span class="line">    BYTE chsFirst[<span class="number">3</span>]; <span class="comment">//起始扇区号</span></span><br><span class="line">    BYTE type; <span class="comment">//操作系统类型指示代码</span></span><br><span class="line">    BYTE chsLast[<span class="number">3</span>]; <span class="comment">//结束扇区号</span></span><br><span class="line">    DWORD lbaStart; <span class="comment">//相对于硬盘起点的第一个扇区</span></span><br><span class="line">    DWORD size; <span class="comment">//分区中扇区数</span></span><br><span class="line">&#125; MBR_PARTITION_TABLE_ENTRY, *PMBR_PARTITION_TABLE_ENTRY;</span><br></pre></td></tr></table></figure>
+<p>WIndows典型启动硬盘驱动器布局如下。其中bootmgr模块确定要加载哪个特定操作系统实例。若安装了多个系统，bootmgr显示一个对话框提示用户选择一个，还提供参数如安全模式、最后一次正确配置、禁用驱动签名等。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>MBR代码</td>
+</tr>
+<tr>
+<td>2</td>
+<td>分区表条目1（无效）---指向Bootmgr分区前</td>
+</tr>
+<tr>
+<td>3</td>
+<td>分区表条目2（操作系统）---指向操作系统分区</td>
+</tr>
+<tr>
+<td>4</td>
+<td>分区表条目3（空闲）</td>
+</tr>
+<tr>
+<td>5</td>
+<td>MBR数据</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Bootmgr分区（bootmgr模块、其他引导组件）</td>
+</tr>
+<tr>
+<td>7</td>
+<td>操作系统分区（托管操作系统、用户数据卷）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>硬盘驱动器可能包含承载不同操作系统的多个实例和几个分区，但通常只有一个分区被标记为活动的。MBR读取并执行分区的第一个扇区VBR。VBR包含分区布局信息，指定正在使用的文件系统类型及参数，以及从活动分区读取初始程序装入器IPL模块的代码。IPL模块实现文件系统解析功能，以便从分区的文件系统中读取文件，并报告硬盘驱动器开始的偏移量。VBR布局如下结构如下，BPB结构布局对应卷文件系统，另外两个结构对应NTFS卷。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_BIOS_PARAMTER_BLOCK_NTFS</span> &#123; <span class="comment">//BPB结构</span></span><br><span class="line">    WORD SectorSize;</span><br><span class="line">    BYTE SectorsPerCluster;</span><br><span class="line">    WORD ReservedSectors;</span><br><span class="line">    BYTE Reserved[<span class="number">5</span>];</span><br><span class="line">    BYTE MediaId;</span><br><span class="line">    BYTE Reserved2[<span class="number">2</span>];</span><br><span class="line">    WORD SectosPerTrack;</span><br><span class="line">    WORD NumberOfHeads;</span><br><span class="line">    DWORD HiddenSectors;</span><br><span class="line">    BYTE Reserved3[<span class="number">8</span>];</span><br><span class="line">    QWORD NumberOfSectors;</span><br><span class="line">    QWORD MFTStartingCluster;</span><br><span class="line">    QWORD MFTMirrorStartingCluster;</span><br><span class="line">    BYTE ClusterPerFileRecord;</span><br><span class="line">    BYTE Reserved4[<span class="number">3</span>];</span><br><span class="line">    BYTE ClusterPerIndexBuffer;</span><br><span class="line">    BYTE Reserved5[<span class="number">3</span>];</span><br><span class="line">    QWORD NTFSSerial;</span><br><span class="line">    BYTE Reserved6[<span class="number">4</span>];</span><br><span class="line">&#125; BIOS_PARAMETER_BLOCK_NTFS, *PBIOS_PARAMETER_BLOCK_NTFS;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_BOOTSTRAP_CODE</span>&#123;</span><br><span class="line">    BYTE bootCode[<span class="number">420</span>]; <span class="comment">//引导扇区机器代码 从分区中读取和执行IPL 指定位置时HiddeSectors字段</span></span><br><span class="line">    					<span class="comment">//代码末尾有一串出现错误时显示给用户的文本字符串</span></span><br><span class="line">    WORD bootSectorSignature; <span class="comment">//0x55AA VBR签名</span></span><br><span class="line">&#125; BOOTSTRAP_CODE, *PBOOTSTRAP_CODE;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_VOLUME_BOOT_RECORD</span> &#123;</span><br><span class="line">    WORD jmp; <span class="comment">//将系统传输控制转换到VBR代码bootCode</span></span><br><span class="line">    BYTE nop;</span><br><span class="line">    DWORD OEM_Name;</span><br><span class="line">    DWORD OEM_ID: <span class="comment">//NTFS</span></span><br><span class="line">    BIOS_PARAMTER_BLOCK_NTFS BPB;</span><br><span class="line">    BOOTSTRAP_CODE BootStrap;</span><br><span class="line">&#125; VOLUME_BOOT_RECORD, *PVOLUME_BOOT_RECORD;</span><br></pre></td></tr></table></figure>
+<p>IPL从文件系统读取并加载操作系统引导管理器bootmgr模块，后者读取引导配置数据BCD其中包含一些影响安全策略的参数，如内核模式代码签名策略等。Bootkit常试图绕过bootmgr代码完整性验证实现。在Windows 10中bootmgr引导菜单的界面标题为“Startup Settings”。bootmgr管理启动过程直至用户选择启动选项为止，此后winload.exe或winresume.exe（系统从休眠状态启动）将加载内核，启动驱动程序以及一些系统注册表数据。</p>
+<p>实模式最大地址只有ffff\:ffff，bootmgr在winload.exe和bootmgr接管后将处理器切换到保护模式，在x64下称为长模式。bootmgr由16位实模式代码和一个压缩的PE镜像组成。16位代码提取和解压缩该PE，将处理器切换到保护模式并将控制权传递给该模块。Bootkit必需正确处理处理器执行模式的切换，以保持对引导代码执行的控制。在切换后，整个内存布局被改变，且一线位于一个连续的内存地址集的代码的一部分可以移动到不同的内存段。</p>
+<p>上述未压缩的映像从BCD加载引导配置信息，当BCD存储在硬盘驱动器上时，其布局与注册表配置单元相同，可读取HKEY_LOCAL_MACHINE\\BCD 000000。bootmgr会将处理器执行的运行环境保存在临时变量中，临时切换到实模式，执行<code>INT 13h</code>磁盘服务，从硬盘驱动器读取数据，然后返回保护模式，还原保存的运行环境。</p>
+<p>BCD存储区包含bootmgr加载操作系统所需的所有信息，常用参数有：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>参数类型</th>
+<th>参数ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BcdLibraryBoolean_Disable-IntegrityCheck（Windows 7以上废弃）</td>
+<td>Boolean</td>
+<td>0x16000048</td>
+</tr>
+<tr>
+<td>BcdOSLoaderBoolean_WinPEMode</td>
+<td>Boolean</td>
+<td>0x26000022</td>
+</tr>
+<tr>
+<td>BcdLibraryBoolean_Allow-PrereleaseSignatures</td>
+<td>Boolean</td>
+<td>0x1600004</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>变量BcdOSLoaderBoolean_WInPEMode指示系统在Windows预安装环境模式下启动，该模式本质是具有有限服务的最小Win32操作系统，主要用于为Windows安装准备计算机。此模式还禁止内核完整性检查，包括x64下强制指定的内核模式代码签名策略。</p>
+<p>变量BcdLibraryBoolean_Allow-PrereleaseSignatures使用测试代码签名证书来加载内核模式驱动程序以进行测试，这些证书可通过Windows驱动程序工具包中包含的工具生成。Necurs Rootkit用此过程将恶意内恶化模式驱动程序安装到系统上，并使用自定义证书签名。</p>
+<p>获取引导选项后，bootmgr执行自我完整性验证，检查失败则停止引导并显示错误消息。若上述两个变量任意一个为TRUE则bootmgr不执行自我完整性检查。此后bootmgr选择winload.exe或winresume.exe。winload.exe接收到对操作系统引导的控制时，它启用保护模式下的分页，并加载操作系统内核镜像机器依赖项，包含bootvid.dll（计算机图形图像支持）、ci.dll（代码完整性）、clfs.dll（哦那个用日志文件系统驱动）、hal.dll（硬件抽象层）、kdcom.dll（内核调试器协议通信库）、pshed.dll（特定平台硬件错误驱动）、存储设备驱动、ELAM（早期启动反恶意软件）。系统注册表配置单元启动驱动等。</p>
+<h2 id="引导过程安全性"><a href="#引导过程安全性" class="headerlink" title="引导过程安全性"></a>引导过程安全性</h2><p>ELAM模块是一种用于Windows系统的检测机制，允许第三方安全软件注册一个内核模式驱动，该驱动保证在启动过程早期执行，在其他第三方驱动加载前。ELAM驱动注册回调例程，内核使用这些例程来评估系统注册表配置单元和引导驱动中数据。如用<code>CmRegisterCallbackEx</code>和<code>CmUnRegisterCallback</code>注册和注销监视注册表数据回调，用<code>IoRegisterBootDriverCallback</code>和<code>IoUnRegisterBootDriverCallback</code>来注册和注销启动驱动的回调，这些回调函数标准如下。对于Argument1参数为BdCbStatusUpdate向ELAM驱动提供有关驱动程序依赖项或引导驱动程序的加载的状态更新，为BdCbInitializeImage表示ELAM驱动用于对引导驱动及其依赖项进行分类。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NTSTATUS <span class="title">EX_CALL_FUNCTION</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ PVOID CallbackContext, <span class="comment">//从ELAM驱动接收上下文</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ PVOID Argument1, <span class="comment">//回调类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ PVOID Argument2 <span class="comment">//系统提供的上下文结构</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>ELAM驱动基于映像的名称、注册为引导驱动的注册表位置、文件的证书发布者和所有者、散列值和对应算法名、证书指纹和指纹算法名，上述Argument2参数表示操作系统对引导驱动的分类信息，可以是非恶意、未知和恶意。Windows根据ELAM策略值HKLM\\System\\CurrentControlSet\\Control\\EarlyLaunch\\DriverLoadPolicy决定是否加载已知的恶意或未知驱动。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>策略名</th>
+<th>策略值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PNP_INITIALIZE_DRIVERS_DEFAULT</td>
+<td>0x00</td>
+<td>仅加载已知为非恶意的驱动</td>
+</tr>
+<tr>
+<td>PNP_INITIALIZE_UNKNOWN_DRIVERS</td>
+<td>0x01</td>
+<td>仅加载已知为非恶意、未知的驱动</td>
+</tr>
+<tr>
+<td>PNP_INITIALIZE_BAD_CRITICAL_DRIVERS</td>
+<td>0x03</td>
+<td>默认，加载已知为非恶意、未知的驱动和已知为恶意的非关键驱动</td>
+</tr>
+<tr>
+<td>PNP_INITIALIZE_BAD_DRIVERS</td>
+<td>0x07</td>
+<td>加载所有驱动</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ELAM只能防御Rootkit而不能防御Bootkit。</p>
+<p>内核模式驱动完整性检查。签名策略从Windows Vista引入，在64为系统上无论类型如何，所有内核模式模块都要进行完整性检查。驱动必需有一个嵌入式软件发布证书SPC数字签名，或一个SPC签名的目录文件。开机启动驱动只能用嵌入式签名，因为启动时存储设备驱动没初始化，目录文件不可访问。</p>
+<p>PE文件的嵌入式驱动签名在PE头数据目录的IMAGE_DIRECTORY_DATA_SECURITY条目中指定，枚举和验证证书的API：</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">ImageEnumerateCertificates</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ HANDLE FileHandle,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ WORD TypeFilter,</span></span></span><br><span class="line"><span class="params"><span class="function">    _Out_ PDWORD CertificateCount,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_opt_ PDWORD Indices,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_opt_ DWORD IndexCount</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br><span class="line"><span class="function">BOOL <span class="title">ImageGetCertificateData</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ HANDLE FileHandle,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ DWORD CertificateIndex,</span></span></span><br><span class="line"><span class="params"><span class="function">    _Out_ LPWIN_CERTIFICATE Certificate,</span></span></span><br><span class="line"><span class="params"><span class="function">    _Inout_ PDWORD RequiredLength</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>除了内核模式代码签名策略，还有即插即用设备安装签名策略，目的是验证发布者身份和PnP设备驱动安装包完整性，要求驱动程序包目录文件由Windows硬件质量实验室WHQL认证或由第三方SPC签署。。若驱动不符合PnP策略要求，会出现一个警告对话框给出提示，并由用户决定是否在自己的系统上安装该驱动程序包。该策略只映像驱动安装，而不影响驱动加载，加载仍受到内核模式代码签名策略检查。该PnP策略可被禁止，允许没有适当签名的PnP驱动安装。</p>
+<p>内核模式代码签名策略中负责执行代码完整性的逻辑在Windows内核映像和内核模式库ci.dll中共享，内核映像通过该库来验证加载到内核地址空间的所有模块的完整性。在Windows Vista和Windows 7中，内核映像中单个变量<code>BOOL nt!g_CiEnabled</code>确定是否强制执行完整性检查，它由启动时内核映像例程<code>NTSTATUS SepInitializeCodeIntegrity()</code>初始化。操作系统检查是否将其引导到Windows预安装模式（WinPE），如果已引导则将该单个变量初始化为FALSE，来禁用完整性检查。攻击者可轻松将该变量设为FALSE来规避完整性检查，这在2011年被Uroburos恶意软件家族（另称Snake和Turla）使用，原理是引入并利用第三方VirtualBox驱动VBoxDrv.sys的漏洞。</p>
+<p>若Windows未处于WinPE模式，接下来检查引导选项DISABLE_INTEGRITY_CHECKS和TESTSIGNING的值。前者可由用户在引导菜单或bcdedit.exe中设为TRUE，启用Secure Boot后该值被忽略。后者为TRUE时，不需要证书验证就可一直链接到受信任的根证书颁发机构CA，即任何具有数字签名的驱动都可加载到内核空间中。</p>
+<p>负责执行代码完整性策略的内核模式库ci.dll有常用例程：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>例程</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CiCheckSignedFile</code></td>
+<td>验证摘要和数字签名</td>
+</tr>
+<tr>
+<td><code>CiFindPageHashedInCatelog</code></td>
+<td>验证经过验证的系统目录是否包含PE映像的第一个内存页摘要</td>
+</tr>
+<tr>
+<td><code>CiFindPageHashesInSignedFile</code></td>
+<td>验证摘要并验证PE映像第一个内存页的数字签名</td>
+</tr>
+<tr>
+<td><code>CiFreePolicyInfo</code></td>
+<td>释放由<code>CiVerifyHashInctalog</code>、<code>CiCheckSignedFile</code>、<code>CiFindPageHashesInCatalog</code>和<code>CiFindPageHashesInSignedFile</code>分配的内存</td>
+</tr>
+<tr>
+<td><code>CiGetPEInformation</code></td>
+<td>在调用方和ci.dll之间创建加密的通信通道</td>
+</tr>
+<tr>
+<td><code>CiInitialize</code></td>
+<td>初始化ci.dll的功能来验证PE映像文件的完整性</td>
+</tr>
+<tr>
+<td><code>CiVerifyHashInCatalog</code></td>
+<td>验证那个包含在经过验证的系统目录中PE映像的摘要</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>其中最重要的<code>CiInitialize</code>例程原型如下，它还进行自我检查，确保自身没被篡改，此后例程继续验证引导驱动列表中所有驱动的完整性。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NTSTATUS <span class="title">CiInitialize</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ ULONG CiOptions; <span class="comment">//完整性选项</span></span></span></span><br><span class="line"><span class="params"><span class="function">    PVOID Parameters,</span></span></span><br><span class="line"><span class="params"><span class="function">    _Out_ PVOID g_CiCallbacks <span class="comment">//回调数组</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>一旦ci.dll初始化完成，内核用回调数组缓冲区中的回调来验证模块的完整性。Windows Vista和Windows 7中，<code>SeValidateImageHeader</code>例程决定映像是否通过完整性检查，伪代码如下：</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NTSTATUS <span class="title">SeValidateImageHeader</span><span class="params">(Parameters)</span> </span>&#123;</span><br><span class="line">    NTSTATUS Status=STATUS_SUCCESS;</span><br><span class="line">    VOID Buffer=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span>(g_CiEnable==TRUE)&#123;</span><br><span class="line">        <span class="keyword">if</span>(g_CiCallbacks[<span class="number">0</span>]!=<span class="literal">NULL</span>)</span><br><span class="line">            Status=g_CiCallbacks[<span class="number">0</span>](Parameters);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            Status=<span class="number">0xC0000428</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        Buffer=<span class="built_in">ExAllocatePoolWithTag</span>(PagedPool,<span class="number">1</span>,<span class="string">&#x27;hPeS&#x27;</span>);</span><br><span class="line">        *Parameters=Buffer;</span><br><span class="line">        <span class="keyword">if</span>(Buffer==<span class="literal">NULL</span>)</span><br><span class="line">            Status=STATUS_NO_MEMORY;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> Status;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Windows 8时弃用内核变量<code>nt!g_CiEnabled</code>，并更改了<code>g_CiCallbacks</code>缓冲区布局：</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_CI_CALLBACKS_WIN8</span> &#123;</span><br><span class="line">    ULONG ulSize;</span><br><span class="line">    PVOID CiSetFileCache;</span><br><span class="line">    PVOID CiGetFileCache;</span><br><span class="line">    PVOID CiQueryInformation;</span><br><span class="line">    PVOID CiValidateImageHeader;</span><br><span class="line">    PVOID CiValidateImageData;</span><br><span class="line">    PVOID CiHashMemory;</span><br><span class="line">    PVOID KappxIsPackageFile;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Windows 8引入Secure Boot技术，利用同意可扩展固件接口UEFI来阻止任何没有有效数字签名的启动应用程序或驱动程序的加载和执行。启用后BIOS验证启动时执行的所有UEFI和系统引导文件的完整性，以确保他们时合法来源并具有有效的数字签名。系统首次启动时，Secure Boot确保预启动环境和引导加载程序组件不被破坏，引导加载程序反过来验证内核和引导启动驱动的完整性。内核通过完整性验证后，Secure Boot将验证其他驱动和模块。</p>
+<p>攻击者可能攻击完整性机制本身，因此WIndows 10引入虚拟安全模式VSM和设备保护Device Guard，两者都基于硬件辅助的内存隔离。这种技术被称为二级地址转换。包括在Intel（扩展页表EPT）和AMD（快速虚拟化索引RVI）CPU中。</p>
+<p>Hyper-V使用二级地址转换SLAT对虚拟机执行内存管理，并减少将guest用户的物理地址（由虚拟化技术隔离的内存）转换为实际物理地址的开销。SLAT为虚拟机监控程序提供虚拟地址与物理地址转换的中间缓存，这减少了虚拟机管理程序为主机物理地址的转换请求提供服务所需的时间。</p>
+<p>VSM从Windows 10出现，建立在Hyper-V之上，将在隔离的虚拟机管理程序保护的容器中执行操作系统和关键系统模块。即使内核遭到破坏，其他虚拟环境中执行的关键组件仍然安全，攻击者无法从一个收到破坏的虚拟空间转移到另一个虚拟空间。潜在的易受攻击的驱动和代码完整性库位于单独的虚拟容器中，攻击者无法关闭代码完整性保护。换句话说，VSM将代码完整性关键系统组件HVCI与系统内核地址空间隔离开。</p>
+<p>Device Guard将VSM代码完整性保护与平台和UEFI Secure Boot进行了结合，防止不受信任的代码在系统上运行。Device Guard从启动过程开始，到加载系统内核驱动和用户应用程序，都强制执行代码完整性策略。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">                                    VSM:</span><br><span class="line">                                   安全内核&lt;-&gt;HVCI</span><br><span class="line">                                     | Device Guard:</span><br><span class="line">Secure Boot:                         | HVGI:</span><br><span class="line">BIOS-&gt;UEFI-&gt;bootmgr(winload.exe)-&gt;系统内核-&gt;ELAM-&gt;内核驱动</span><br><span class="line">       |              |                |</span><br><span class="line">防Bootkit加载    防Bootkit破坏系统模块   防Bootkit将代码注入内核地址空间</span><br></pre></td></tr></table></figure>
+<p>在Device Guard机制下，驱动程序开发时需要注意一些事项：从非执行NX非分页池中分配所有非分页内存，驱动的PE模块不能同时具有可写和可执行的部分；不能尝试直接修改可执行系统内存；不能再内核模式下使用动态的或自修改的代码；不要加载任何可执行数据。</p>
+<h2 id="Bootkit感染技术"><a href="#Bootkit感染技术" class="headerlink" title="Bootkit感染技术"></a>Bootkit感染技术</h2><p>Bootkit感染技术分为MBR感染技术和VBR/初始程序加载器IPL感染技术，MBR感染例子有TDL4  Bootkit，VBR感染例子有Rovnix和Gapz Bootkit。MBR感染技术直接修改MBR代码或MBR数据。MBR代码修改指的是以某种方式保存MBR原始内容，用恶意代码覆盖系统MBR代码。MBR数据修改方法涉及更改MBR分区表，但分区表内容因系统而异。</p>
+<p>MBR代码修改的例子是TDL4，它重用了TDL3的高级逃避和反司法鉴定技术，增加绕过内核代码签名策略的能力，并感染x64的Windows系统。</p>
+<p>TDL4在磁盘末端创建了一个隐藏的存储区域，将原始MBR和自己的一些模块写入其中，以便在概然发生后可加载，系统看起来会正常启动。Bootkit在引导时使用MBR、LDR16、LDR32和LDR64模块来绕过Windows完整性检查，并加载未签名的恶意驱动。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>模块名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mbr</td>
+<td>受感染的硬盘驱动引导扇区的原始内容</td>
+</tr>
+<tr>
+<td>ldr16</td>
+<td>16位实模式加载的代码</td>
+</tr>
+<tr>
+<td>ldr32</td>
+<td>x86系统的虚假kdcom.dll</td>
+</tr>
+<tr>
+<td>ldr64</td>
+<td>x64系统的虚假kdcom.dll</td>
+</tr>
+<tr>
+<td>drv32</td>
+<td>x86的Bootklit驱动</td>
+</tr>
+<tr>
+<td>drv64</td>
+<td>x64的Bootkit驱动</td>
+</tr>
+<tr>
+<td>cmd.dll</td>
+<td>注入x86进程的有效负载</td>
+</tr>
+<tr>
+<td>cmd64.dll</td>
+<td>注入x64进程的有效负载</td>
+</tr>
+<tr>
+<td>cfg.ini</td>
+<td>配置信息</td>
+</tr>
+<tr>
+<td>bckfg.tmp</td>
+<td>加密的C&amp;C服务器链接</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>TDL4用<code>DeviceIoControl</code>直接将I/O控制代码IOCTL_SCSI_PASS_THROUGH_DIRECT直接发送到磁盘微型端口驱动，第一个参数传递符号链接打开的句柄\\??\\PhysicalDriveXX，其中XX为被感染的硬盘的数字。用写访问打开这个句柄需要管理特权，TDL4用MS10-092漏洞来提升特权。安装所有组件后，TDL4用<code>NtRaiseHardError</code>强制系统重启：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NTSYSAPI NTSTATUS NTAPI <span class="title">NtRaiseHardError</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ NTSTATUS ErrorStatus,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ ULONG NumberOfParameters,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_opt_ PUNICODE_STRING UnicodeStringParameterMask,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ PVOID* Parameters,</span></span></span><br><span class="line"><span class="params"><span class="function">    _In_ HARDERROR_RESPONSE_OPTION ResponseOption, <span class="comment">//传参OptionShutdownSystem 使系统变为BSoD状态并自动重启</span></span></span></span><br><span class="line"><span class="params"><span class="function">    _Out_ PHARDERROR_RESPONSE Response</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>TDL4 Bootkit引导过程如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>过程</th>
+<th>从上一步的实现途径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加载受感染的MBR</td>
+<td></td>
+</tr>
+<tr>
+<td>从隐藏文件系统中加载ldr16</td>
+<td>加载并执行受感染的MBR</td>
+</tr>
+<tr>
+<td>挂载BIOS的<code>INT 13h</code>处理程序并还原原始MBR</td>
+<td>ldr16被加载和执行</td>
+</tr>
+<tr>
+<td>加载VBR</td>
+<td>加载并执行原始MBR代码</td>
+</tr>
+<tr>
+<td>加载bootmgr</td>
+<td>VBR被加载和执行</td>
+</tr>
+<tr>
+<td>读取BCD</td>
+<td>bootmgr已加载并接受控制</td>
+</tr>
+<tr>
+<td>加载winload.exe</td>
+<td>用WInPE替换EmsEnabled选项</td>
+</tr>
+<tr>
+<td>加载ntoskrnl.exe、hal.dll、kdcom.dll、bootid.dll</td>
+<td>篡改/MININT选项</td>
+</tr>
+<tr>
+<td>从kdcom.dll调用<code>kdDebuggerInitialize1</code></td>
+<td>使用ldr32或ldr64欺骗kdcom.dll</td>
+</tr>
+<tr>
+<td>继续进行内核初始化</td>
+<td>加载drv32或drv64</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在BSoD和随后的系统重启后，BIOS将受感染的MBR读取到内存中并执行它。接下来受感染的MBR将Bootkit文件系统放在可启动硬盘驱动器的末尾，加载和执行ldr16模块。ldr16模块包含的代码负责挂载BIOS的13h终端处理程序，重载原始MBR并将执行结果传递给它，这样开机过程照常继续，但13h中断处理程序是被挂载的。一旦控制权转到原MBR，引导过程照常进行，加载VBR和bootmgr，但主流内存的Bootkit控制进出硬盘的所有I/O操作。</p>
+<p>上述引导过程从硬盘读取数据的代码依赖BIOS的13h磁盘服务，这意味着Bootkit可围在引导过程中从硬盘读取的任何数据。此时Bootlit利用此功能将kdcom.dll和隐藏文件中ldr32或ldr64（取决于操作系统）进行替换，并在读取操作期间将内容替换到内存缓冲区。</p>
+<p>模块ldr32或ldr64导出与原kdcom.dll库相同的符号。除<code>kdcom!KdDebuggerInitialize1</code>以外，其他恶意版本导出的都只返回0。该函数在内核初始化期间由Windows内核调用，用于在系统上加载Bootkit驱动代码。每当创建或销毁线程时，将用<code>PsSetCreateThreadNotifyRoutine</code>来注册回调函数<code>CreateThreadNotifyRoutine</code>。触发回调时，会创建恶意DRIVER_OBJECT来挂在系统事件，直到引导中为硬盘设备建立驱动栈为止。</p>
+<p>为了替换kdcom.dll，恶意软件需要禁用内核代码完整性检查，若不禁用，winload.exe将报告一个错误并拒绝据徐引导过程。Bootkit告知winload.exe以预安装模式加载内核来关闭这些检查。winload.exe将BcdLibraryBoolean_EmsEnabled元素（BCD编码为16000020）替换为BcdOSLoaderBoolean_WinPEMode（BCD编码为26000022），其中BcdLibraryBoolean_EmsEnabled是可继承对象，指示是否启用全局应急管理服务重定向，默认TRUE。</p>
+<p>一旦kdcom.dll被加载，恶意软件就禁用WinPE模式，即在从硬盘驱动器读取映像时损坏winload.exe映像中的/MININT字符串选项。winload.exe映像用/MININT选项通知内核已启用WinPE模式，但由此一来内核接收到无效的/MININT选项并继续初始化。这是Bootkit感染的引导过程的最后一步，绕过代码完整性检查后，恶意内核驱动成功加载到了系统中。</p>
+<p>为避免TDL4引导程序包中恶意MBR代码被使用静态签名的静态分析检测到，恶意代码被使用<code>ror</code>循环右移加密。</p>
+<p>TDL4的一个变种Olmasco修改分区表而不是MBR代码。Olmasco在可启动硬盘驱动器末尾创建一个未分配的分区，再通过此u该MBR分区表中空闲分区表项#2在同一位置创建一个隐藏分区。MBR包含一个分区表，该表条目以偏移量0x1BE开始，在此之前为MBR代码。分区表由4个16字节的条目组成，每个条目描述硬盘上相应分区，为MBR_PARTITION_TABLE_ENTRY结构。硬盘驱动器最多只能有4个主分区，只有一个分区标记为活动分区，操作系统从活动分区启动。Olmasco用自己的恶意分区的参数覆盖分区表中的空条目，将分区标记为活动状态，并初始化新创建的分区的VBR。</p>
+<p>VBR/IPL感染技术分为IPL修改和BIOS参数块BPB修改，前者例如Rovnix Bootkti，后者例如Gapz Bootkit。Rovnix修改可引导硬盘的活动分区上IPL和NTFS引导程序代码。Rovnix读取VBR之后的15个扇区（即原IPL），对其进行压缩。将原IPL起始位置替换为恶意代码，再将压缩后的原IPL附着在恶意代码之后。下次系统启动时，恶意引导代码将获得控制权。恶意引导代码挂载<code>INT 13h</code>，以便对bootmgr、winload.exe和内核进行修补，以便一旦加载引导程序组件，便可获得控制权。最后Rovnix解压缩原始IPL代码并将控制权返回给它。它还控制调试寄存器DR0~DR7，以再没有实际补丁的情况下对系统代码挂在，绕过内核代码完整性检查，保持被挂载代码的完整性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Rovnix</span><br><span class="line">感染前： NTFS引导代码15扇区：</span><br><span class="line">MBR|VBR|原IPL             |文件系统数据                    |</span><br><span class="line">感染后：</span><br><span class="line">MBR|VBR|恶意代码|压缩后原IPL|文件系统数据|隐藏分区|未签名恶意驱动|</span><br></pre></td></tr></table></figure>
+<p>Gapz用存储在硬盘上的恶意代码扇区中偏移量值覆盖活动分区VBR的HiddenSectors字段，VBR和IPL中所有其他数据和代码不变。当VBR再次运行时，将加载并执行Bootkit而不是合法IPL。Gapz Bootkit映像再第一个分区前或硬盘驱动器最后一个分区之后。</p>
+<h2 id="用IDA分析Bootkit-MBR"><a href="#用IDA分析Bootkit-MBR" class="headerlink" title="用IDA分析Bootkit MBR"></a>用IDA分析Bootkit MBR</h2><p>IDA加载MBR二进制文件后，Loading offset字段设为0x7c00，这是BIOS引导代码加载MBR的固定地址，然后选择16位实模式代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">seg000:7C00 31 C0                                       xor     ax, ax</span><br><span class="line">seg000:7C02 8E D0                                       mov     ss, ax ;初始化存根</span><br><span class="line">seg000:7C04 BC 00 7C                                    mov     sp, 7C00h ; &lt;suspicious&gt;</span><br><span class="line">seg000:7C07 8E C0                                       mov     es, ax</span><br><span class="line">seg000:7C09 8E D8                                       mov     ds, ax</span><br><span class="line">seg000:7C0B FB                                          sti</span><br><span class="line">seg000:7C0C 60                                          pusha</span><br><span class="line">seg000:7C0D B9 CF 00                                    mov     cx, 0CFh</span><br><span class="line">seg000:7C10 BD 19 7C                                    mov     bp, 7C19h ; &lt;suspicious&gt;</span><br><span class="line">seg000:7C13</span><br><span class="line">seg000:7C13                             loc_7C13:                               ; CODE XREF: seg000:7C17↓j</span><br><span class="line">seg000:7C13 D2 4E 00                                    ror     byte ptr [bp+0], cl ;解密</span><br><span class="line">seg000:7C16 45                                          inc     bp</span><br><span class="line">seg000:7C17 E2 FA                                       loop    loc_7C13</span><br><span class="line">seg000:7C17                             ; ---------------------------------------------------------------------------</span><br><span class="line">seg000:7C19 44                                          db  44h ; 加密后代码</span><br><span class="line">seg000:7C1A 85                                          db  85h</span><br><span class="line">seg000:7C1B 1D                                          db  1Dh</span><br></pre></td></tr></table></figure>
+<p>编写解密脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> idaapi</span><br><span class="line">start_ea = <span class="number">0x7C19</span></span><br><span class="line"><span class="keyword">for</span> ix <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0xCF</span>):</span><br><span class="line">	<span class="built_in">print</span>(ix)</span><br><span class="line">	byte_to_decr = idaapi.get_byte(start_ea + ix)</span><br><span class="line">	to_rotate = (<span class="number">0xCF</span> - ix) % <span class="number">8</span></span><br><span class="line">	byte_decr = (byte_to_decr &gt;&gt; to_rotate) | (byte_to_decr &lt;&lt; (<span class="number">8</span> - to_rotate))</span><br><span class="line">	idaapi.patch_byte(start_ea + ix, byte_decr)</span><br></pre></td></tr></table></figure>
+<p>解密后部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">seg000:7C19 88 16 E8 7C                                 mov     ds:drive_no, dl ;dl寄存器包含执行MBR的硬盘驱动器数量</span><br><span class="line">seg000:7C1D 83 2E 13 04 10                              sub     word ptr ds:413h, 10h ;BIOS维护的可用内存 千字节</span><br><span class="line">seg000:7C22 A1 13 04                                    mov     ax, ds:413h</span><br><span class="line">seg000:7C25 C1 E0 06                                    shl     ax, 6</span><br><span class="line">seg000:7C28 A3 63 7C                                    mov     ds:buffer_segm, ax</span><br></pre></td></tr></table></figure>
+<p>BIOS磁盘服务哦那个过<code>INT 13h</code>访问，I/O操作码或标识符在ah寄存器中传递，dl寄存器传递磁盘索引，cf标志指示执行服务期间是否发生错误，cf为1则发生错误，并在ah寄存器中返回详细错误代码。常用操作码如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>操作码</th>
+<th>操作描述</th>
+<th>扩展操作码</th>
+<th>扩展操作描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>41h</td>
+<td>扩展安装检查</td>
+</tr>
+<tr>
+<td>2h</td>
+<td>将扇区读入内存</td>
+<td>42h</td>
+<td>扩展读</td>
+</tr>
+<tr>
+<td>3h</td>
+<td>写磁盘扇区</td>
+<td>43h</td>
+<td>扩展写</td>
+</tr>
+<tr>
+<td>8h</td>
+<td>获取驱动参数</td>
+<td>48h</td>
+<td>扩展获取驱动器参数</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>遗留操作和扩展操作的区别是扩展操作可用基于逻辑块寻址LBA的寻址方案，而遗留操作仅依赖基于柱面磁头扇区CHS的寻址方案。在基于LBA的方案中，扇区在磁盘上进行线性枚举。在基于CHS的方案中，每个扇区用<code>(柱面,磁头,扇区)</code>进行寻址。</p>
+<p>定位隐藏存储的驱动器参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">seg000:7C2B B4 48                                       mov     ah, 48h ; &#x27;H&#x27;</span><br><span class="line">seg000:7C2D BE F9 7C                                    mov     si, 7CF9h ; &lt;suspicious&gt;</span><br><span class="line">seg000:7C30 C7 06 F9 7C 1E 00                           mov     ds:drive_param_bResultSize, 1Eh</span><br><span class="line">seg000:7C36 CD 13                                       int     13h             ; DISK - IBM/MS Extension - GET DRIVE PARAMETERS (DL - drive, DS:SI - buffer) 执行时该例程填充EXTENDED_GET_PARAMS结构 提供驱动器参数 存储在si寄存器中</span><br></pre></td></tr></table></figure>
+<p>检查返回参数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_EXTENDED_GET_PARAMS</span> &#123;</span><br><span class="line">    WORD bResultSize; <span class="comment">//结果大小</span></span><br><span class="line">    WORD InfoFlags; <span class="comment">//信息标识</span></span><br><span class="line">    DWORD CylNumber; <span class="comment">//物理柱面数</span></span><br><span class="line">    DWORD HeadNumber; <span class="comment">//物理磁头数</span></span><br><span class="line">    DWORD SectorsPerTrack; <span class="comment">//每个磁道的扇区数</span></span><br><span class="line">    QWORD TotalSectors; <span class="comment">//扇区总数</span></span><br><span class="line">    WORD BytesPerSector; <span class="comment">//每个扇区字节数</span></span><br><span class="line">&#125; EXTENDED_GET_PARAMS, *PEXTENDED_GET_PARAMS;</span><br></pre></td></tr></table></figure>
+<p>Bootkit通过将TotalSectors和BytesPerSector相乘来计算硬盘驱动器总大小，单位字节，使用结果定位驱动器末端的隐藏存储。下列代码读取隐藏数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">seg000:7C4C                             read_loop:                              ; CODE XREF: seg000:7C5D↓j</span><br><span class="line">seg000:7C4C E8 16 00                                    call    read_sector ;从硬盘驱动器读扇区 存储在先前分配的内存缓冲区中</span><br><span class="line">seg000:7C4F BE 1D 7D                                    mov     si, 7D1Dh ; &lt;suspicious&gt;</span><br><span class="line">seg000:7C52 8B 0E 1B 7D                                 mov     cx, ds:word_7D1B</span><br><span class="line">seg000:7C56 F3 A4                                       rep movsb</span><br><span class="line">seg000:7C58 A1 19 7D                                    mov     ax, ds:word_7D19</span><br><span class="line">seg000:7C5B 85 C0                                       test    ax, ax</span><br><span class="line">seg000:7C5D 75 ED                                       jnz     short read_loop</span><br><span class="line">seg000:7C5F 61                                          popa</span><br><span class="line">seg000:7C60</span><br><span class="line">seg000:7C60                             loc_7C60:                               ; DATA XREF: seg000:7C28↑w</span><br><span class="line">seg000:7C60                                                                     ; seg000:7C45↑r</span><br><span class="line">seg000:7C60 EA 00 00 00 00                              jmp     far ptr 0:0 ;bootloader 将控制权转移给恶意引导加载程序</span><br></pre></td></tr></table></figure>
+<p>对于read_sector例程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">seg000:7C65     read_sector     proc near               ; CODE XREF: seg000:read_loop↑p</span><br><span class="line">seg000:7C65                                             ; sub_7CA9+3↓p</span><br><span class="line">seg000:7C65 000                 pusha</span><br><span class="line">seg000:7C66 010                 mov     byte ptr ds:disk_address_packet.PacketSize, 10h</span><br><span class="line">seg000:7C6B 010                 mov     byte ptr ds:disk_address_packet.SectorsToTransfer, 1</span><br><span class="line">seg000:7C70 010                 push    cs</span><br><span class="line">seg000:7C71 012                 pop     ds:disk_address_packet.TargetBuffer+2</span><br><span class="line">seg000:7C75 010                 mov     word ptr ds:disk_address_packet+TargetBuffer, 7D17h ; &lt;suspicious&gt;</span><br><span class="line">seg000:7C7B 010                 push    large [ds:drive_param.TotalSectors_l]</span><br><span class="line">seg000:7C80 014                 pop     large [ds:disk_address_packet.StartLBA_l]</span><br><span class="line">seg000:7C85 010                 push    large [ds:driver_param.TotalSectors_h]</span><br><span class="line">seg000:7C8A 014                 pop     large [ds:disk_address_packet.StartLBA_h]</span><br><span class="line">seg000:7C8F 010                 inc     eax</span><br><span class="line">seg000:7C91 010                 sub     ds:disk_address_packet.StartLBA_l, eax</span><br><span class="line">seg000:7C96 010                 sbb     ds:disk_address_packet.StartLBA_h, 0</span><br><span class="line">seg000:7C9C 010                 mov     ah, 42h ; &#x27;B&#x27;</span><br><span class="line">seg000:7C9E 010                 mov     si, 7CE9h ; &lt;suspicious&gt; 该结构地址</span><br><span class="line">seg000:7CA1 010                 mov     dl, byte ptr ds:drive_no</span><br><span class="line">seg000:7CA5 010                 int     13h             ; DISK - IBM/MS Extension - EXTENDED READ (DL - drive, DS:SI - disk address packet)</span><br><span class="line">seg000:7CA7 010                 popa</span><br><span class="line">seg000:7CA8 000                 retn</span><br><span class="line">seg000:7CA8     read_sector     endp</span><br></pre></td></tr></table></figure>
+<p>其中BIOS磁盘服务用DISK_ADDRESS_PACKET唯一标识要从硬盘驱动器读取的扇区。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_DISK_ADDRESS_PACKET</span> &#123;</span><br><span class="line">    BYTE PacketSize; <span class="comment">//结构大小</span></span><br><span class="line">    BYTE Reserved;</span><br><span class="line">    WORD SectorsToTransfer; <span class="comment">//要读写的扇区数量</span></span><br><span class="line">    DWORD TargetBuffer; <span class="comment">//段 数据缓冲区偏移量</span></span><br><span class="line">    QWORD StartLBA; <span class="comment">//起始扇区LBA地址</span></span><br><span class="line">&#125; DISK_ADDRESS_PACKET, *PDISK_ADDRESS_PACKET;</span><br></pre></td></tr></table></figure>
+<p>分区表位于MBR偏移0x1BE的位置，结构这里不再重复。0x7DBE处的BYTE表示激活状态，0x7DC2处BYTE表示NTFS类型，0x7DC5处DWORD表示初始偏移量部分，0x7DCA处DWORD表示分区大小，单位字节。其他条目为0的即为N/A。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">7DBE:80 01 01 00 07 FE F8 FF 38 00 00 00 88 BD 7F 02</span><br><span class="line">7DCE:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span><br><span class="line">7DDE:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span><br><span class="line">7DEE:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span><br></pre></td></tr></table></figure>
+<p>之前说过BPB中HiddenSectors+1为0x2000字节的IPL，例如BPB结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">seg000:000B 00 02                       word_B          dw 200h                 ; SectorSize</span><br><span class="line">seg000:000D 08                          byte_D          db 8                    ; SectorsPerCluster</span><br><span class="line">seg000:000E 00 00 00                    byte_E          db 3 dup(0)             ; reserved</span><br><span class="line">seg000:0011 00 00                       word_11         dw 0                    ; RootDirectoryIndex</span><br><span class="line">seg000:0013 00 00                                       dw 0                    ; NumberOfSectorsFAT</span><br><span class="line">seg000:0015 F8                                          db 0F8h                 ; MediaId</span><br><span class="line">seg000:0016 00 00                       byte_16         db 2 dup(0)             ; Reserved2</span><br><span class="line">seg000:0018 3F 00                                       dw 3Fh                  ; SectorsPerTrack</span><br><span class="line">seg000:001A FF 00                                       dw 0FFh                 ; NumberOfHeads</span><br><span class="line">seg000:001C 00 08 00 00                 dword_1C        dd 800h                 ; HiddenSectors</span><br></pre></td></tr></table></figure>
+<h2 id="仿真与联动"><a href="#仿真与联动" class="headerlink" title="仿真与联动"></a>仿真与联动</h2><p>这里用VMware Workstation与IDA Pro进行联动。将虚拟机配置文件.vmx内容修改或添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">debugStub.listen.guest64 = &quot;TRUE&quot; //允许从本地主机进行来宾调试 启用了VMware GDB存根 允许将支持GDB协议的调试器附加到已调试的虚拟机上</span><br><span class="line">debugStub.hideBreakpoints = &quot;TRUE&quot; //允许使用硬件断点 而不是软件断点</span><br><span class="line">monitor.debugOnStartGuest64 = &quot;TRUE&quot; //GDB在执行CPU第一个指令时 即启动虚拟机后 终端调试器</span><br><span class="line">//上述后缀32或64位不影响 因为调试的是16位实模式的预引导代码</span><br></pre></td></tr></table></figure>
+<p>IDA启动动调，选项为“Remote GDB debugger”，参数localhost\:8832。IDA动调时将创建一个32位内存段，右键属性把它改成16位的。用F2在0000\:7c00h上设置一个断点，在Location区域填写0x7c00，Settings框选Enabled和Hardware，并激活硬件断点模式Hardware breakpointmode为Execute，Size设为0x1即可，F9跑。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://Monoceros.github.io">Monoceros406</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://monoceros.github.io/2024/10/08/%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-Bootkit%E5%88%9D%E6%8E%A2/">http://monoceros.github.io/2024/10/08/%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-Bootkit%E5%88%9D%E6%8E%A2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Monoceros.github.io" target="_blank">The Blog of Monoceros406</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/">逆向工程</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/10/08/Python-PyQt6%E5%85%A5%E9%97%A8/" title="Python-PyQt6入门"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Python-PyQt6入门</div></div></a></div><div class="next-post pull-right"><a href="/2024/09/20/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2-%E7%90%86%E8%AE%BA%E5%85%A5%E9%97%A8/" title="硬件安全初探-理论入门"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">硬件安全初探-理论入门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/11/16/Angr%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/" title="Angr做题笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-16</div><div class="title">Angr做题笔记</div></div></a></div><div><a href="/2023/10/29/Angr%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E7%AC%94%E8%AE%B0/" title="Angr符号执行笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-29</div><div class="title">Angr符号执行笔记</div></div></a></div><div><a href="/2023/11/09/C-%E7%97%85%E6%AF%92%E6%8A%80%E6%9C%AF/" title="C++病毒技术"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-09</div><div class="title">C++病毒技术</div></div></a></div><div><a href="/2023/11/15/CvxPy%E6%95%B4%E6%95%B0%E8%A7%84%E5%88%92%E7%AC%94%E8%AE%B0/" title="CvxPy整数规划笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-15</div><div class="title">CvxPy整数规划笔记</div></div></a></div><div><a href="/2023/10/21/IDA%E5%9C%A8Kali-Linux%E4%B8%8B%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%AC%94%E8%AE%B0/" title="IDA在Kali Linux下的远程动态调试笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-21</div><div class="title">IDA在Kali Linux下的远程动态调试笔记</div></div></a></div><div><a href="/2023/10/29/IDA%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B/" title="IDA脚本编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-29</div><div class="title">IDA脚本编程</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Monoceros406</div><div class="author-info__description">智邮普创工作室安全组（退役）/Nepnep联合战队</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">291</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Monoceros406"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Monoceros406" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:monoceros406@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">QQ:1295625063（不找对象）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90-Bootkit%E5%88%9D%E6%8E%A2"><span class="toc-number">1.</span> <span class="toc-text">恶意代码分析-Bootkit初探</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A2%8E%E7%A2%8E%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">碎碎念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows%E5%BC%95%E5%AF%BC%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">Windows引导过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%AF%BC%E8%BF%87%E7%A8%8B%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text">引导过程安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bootkit%E6%84%9F%E6%9F%93%E6%8A%80%E6%9C%AF"><span class="toc-number">1.4.</span> <span class="toc-text">Bootkit感染技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8IDA%E5%88%86%E6%9E%90Bootkit-MBR"><span class="toc-number">1.5.</span> <span class="toc-text">用IDA分析Bootkit MBR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BF%E7%9C%9F%E4%B8%8E%E8%81%94%E5%8A%A8"><span class="toc-number">1.6.</span> <span class="toc-text">仿真与联动</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/09/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Android%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" title="安卓逆向入门-Android后端开发入门">安卓逆向入门-Android后端开发入门</a><time datetime="2024-11-09T05:24:38.000Z" title="发表于 2024-11-09 13:24:38">2024-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/09/Linux%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E6%9E%90%E5%85%A5%E9%97%A8/" title="Linux二进制分析入门">Linux二进制分析入门</a><time datetime="2024-11-09T05:24:04.000Z" title="发表于 2024-11-09 13:24:04">2024-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-DEX%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%88%9D%E6%8E%A2/" title="安卓逆向入门-DEX文件格式初探">安卓逆向入门-DEX文件格式初探</a><time datetime="2024-10-28T11:03:36.000Z" title="发表于 2024-10-28 19:03:36">2024-10-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/" title="安卓逆向入门-Unidbg入门">安卓逆向入门-Unidbg入门</a><time datetime="2024-10-28T11:02:59.000Z" title="发表于 2024-10-28 19:02:59">2024-10-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unicorn%E5%85%A5%E9%97%A8/" title="安卓逆向入门-Unicorn入门">安卓逆向入门-Unicorn入门</a><time datetime="2024-10-28T11:02:18.000Z" title="发表于 2024-10-28 19:02:18">2024-10-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Monoceros406</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div class="docsearch-wrap"><div id="docsearch" style="display:none"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css/dist/style.min.css"/><script src="https://cdn.jsdelivr.net/npm/@docsearch/js/dist/umd/index.min.js"></script><script>(() => {
+  docsearch(Object.assign({
+    appId: '',
+    apiKey: '',
+    indexName: '',
+    container: '#docsearch',
+  }, null))
+
+  const handleClick = () => {
+    document.querySelector('.DocSearch-Button').click()
+  }
+
+  const searchClickFn = () => {
+    btf.addEventListenerPjax(document.querySelector('#search-button > .search'), 'click', handleClick)
+  }
+
+  searchClickFn()
+  window.addEventListener('pjax:complete', searchClickFn)
+})()</script></div></div></body></html>
