@@ -6,7 +6,7 @@
   <link href="http://monoceros.github.io/atom.xml" rel="self"/>
   
   <link href="http://monoceros.github.io/"/>
-  <updated>2024-11-09T05:25:01.148Z</updated>
+  <updated>2024-11-11T08:44:47.208Z</updated>
   <id>http://monoceros.github.io/</id>
   
   <author>
@@ -17,11 +17,57 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>安卓逆向入门-安全合规</title>
+    <link href="http://monoceros.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/"/>
+    <id>http://monoceros.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/</id>
+    <published>2024-11-11T06:44:26.000Z</published>
+    <updated>2024-11-11T08:44:47.208Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;安卓逆向入门-安全合规&quot;&gt;&lt;a href=&quot;#安卓逆向入门-安全合规&quot; class=&quot;headerlink&quot; title=&quot;安卓逆向入门-安全合规&quot;&gt;&lt;/a&gt;安卓逆向入门-安全合规&lt;/h1&gt;&lt;h2 id=&quot;Android基础&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>安卓逆向入门-Native层入门</title>
+    <link href="http://monoceros.github.io/2024/11/10/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Native%E5%B1%82%E5%85%A5%E9%97%A8/"/>
+    <id>http://monoceros.github.io/2024/11/10/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Native%E5%B1%82%E5%85%A5%E9%97%A8/</id>
+    <published>2024-11-10T08:15:05.000Z</published>
+    <updated>2024-11-10T09:29:07.509Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;安卓逆向入门-Native层入门&quot;&gt;&lt;a href=&quot;#安卓逆向入门-Native层入门&quot; class=&quot;headerlink&quot; title=&quot;安卓逆向入门-Native层入门&quot;&gt;&lt;/a&gt;安卓逆向入门-Native层入门&lt;/h1&gt;&lt;h2 id=&quot;入门&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
     <title>安卓逆向入门-Android后端开发入门</title>
     <link href="http://monoceros.github.io/2024/11/09/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Android%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/"/>
     <id>http://monoceros.github.io/2024/11/09/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Android%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/</id>
     <published>2024-11-09T05:24:38.000Z</published>
-    <updated>2024-11-09T05:25:01.148Z</updated>
+    <updated>2024-11-10T08:15:44.714Z</updated>
     
     
       
@@ -35,7 +81,7 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -67,7 +113,7 @@
     <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-DEX%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%88%9D%E6%8E%A2/"/>
     <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-DEX%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%88%9D%E6%8E%A2/</id>
     <published>2024-10-28T11:03:36.000Z</published>
-    <updated>2024-11-09T05:26:02.135Z</updated>
+    <updated>2024-11-10T08:15:50.062Z</updated>
     
     
       
@@ -81,7 +127,7 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -90,7 +136,7 @@
     <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/"/>
     <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:02:59.000Z</published>
-    <updated>2024-10-28T11:03:28.000Z</updated>
+    <updated>2024-11-10T08:16:08.893Z</updated>
     
     
       
@@ -104,7 +150,7 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -113,7 +159,7 @@
     <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unicorn%E5%85%A5%E9%97%A8/"/>
     <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unicorn%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:02:18.000Z</published>
-    <updated>2024-10-28T11:02:37.381Z</updated>
+    <updated>2024-11-10T08:16:03.539Z</updated>
     
     
       
@@ -127,7 +173,7 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -136,7 +182,7 @@
     <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/"/>
     <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:01:16.000Z</published>
-    <updated>2024-11-02T08:44:36.000Z</updated>
+    <updated>2024-11-10T09:09:18.226Z</updated>
     
     
       
@@ -150,7 +196,7 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -159,7 +205,7 @@
     <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%9F%BA%E7%BA%BF/"/>
     <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%9F%BA%E7%BA%BF/</id>
     <published>2024-10-28T11:00:42.000Z</published>
-    <updated>2024-10-28T11:01:01.673Z</updated>
+    <updated>2024-11-10T08:16:14.165Z</updated>
     
     
       
@@ -173,7 +219,7 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -182,7 +228,7 @@
     <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
     <published>2024-10-28T10:59:59.000Z</published>
-    <updated>2024-11-09T05:26:49.351Z</updated>
+    <updated>2024-11-10T08:16:19.178Z</updated>
     
     
       
@@ -196,7 +242,7 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
@@ -427,52 +473,6 @@
     
     
     <category term="Web" scheme="http://monoceros.github.io/tags/Web/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Web入门-XXE初探</title>
-    <link href="http://monoceros.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-XXE%E5%88%9D%E6%8E%A2/"/>
-    <id>http://monoceros.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-XXE%E5%88%9D%E6%8E%A2/</id>
-    <published>2024-10-08T11:14:24.000Z</published>
-    <updated>2024-10-08T11:14:53.695Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;NCTF-2019-Fake-XML-cookbook&quot;&gt;&lt;a href=&quot;#NCTF-2019-Fake-XML-cookbook&quot; class=&quot;headerlink&quot; title=&quot;[NCTF 2019]Fake XML</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Web" scheme="http://monoceros.github.io/tags/Web/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>信息安全数学基础</title>
-    <link href="http://monoceros.github.io/2024/10/08/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"/>
-    <id>http://monoceros.github.io/2024/10/08/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</id>
-    <published>2024-10-08T11:13:15.000Z</published>
-    <updated>2024-10-08T11:13:48.039Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;信息安全数学基础&quot;&gt;&lt;a href=&quot;#信息安全数学基础&quot; class=&quot;headerlink&quot; title=&quot;信息安全数学基础&quot;&gt;&lt;/a&gt;信息安全数学基础&lt;/h1&gt;&lt;h2 id=&quot;整除&quot;&gt;&lt;a href=&quot;#整除&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Crypto" scheme="http://monoceros.github.io/tags/Crypto/"/>
     
   </entry>
   
