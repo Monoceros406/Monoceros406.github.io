@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>The Blog of Monoceros406</title>
-  <icon>http://monoceros.github.io/icon.png</icon>
+  <icon>https://monoceros406.github.io/icon.png</icon>
   <subtitle>Reverse</subtitle>
-  <link href="http://monoceros.github.io/atom.xml" rel="self"/>
+  <link href="https://monoceros406.github.io/atom.xml" rel="self"/>
   
-  <link href="http://monoceros.github.io/"/>
-  <updated>2024-11-11T08:44:47.208Z</updated>
-  <id>http://monoceros.github.io/</id>
+  <link href="https://monoceros406.github.io/"/>
+  <updated>2024-11-13T14:06:13.467Z</updated>
+  <id>https://monoceros406.github.io/</id>
   
   <author>
     <name>Monoceros406</name>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>安卓逆向入门-安全合规</title>
-    <link href="http://monoceros.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/"/>
-    <id>http://monoceros.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/</id>
+    <link href="https://monoceros406.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/"/>
+    <id>https://monoceros406.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/</id>
     <published>2024-11-11T06:44:26.000Z</published>
-    <updated>2024-11-11T08:44:47.208Z</updated>
+    <updated>2024-11-13T14:06:13.467Z</updated>
     
     
       
@@ -35,14 +35,14 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-Native层入门</title>
-    <link href="http://monoceros.github.io/2024/11/10/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Native%E5%B1%82%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/11/10/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Native%E5%B1%82%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/11/10/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Native%E5%B1%82%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/11/10/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Native%E5%B1%82%E5%85%A5%E9%97%A8/</id>
     <published>2024-11-10T08:15:05.000Z</published>
     <updated>2024-11-10T09:29:07.509Z</updated>
     
@@ -58,14 +58,14 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-Android后端开发入门</title>
-    <link href="http://monoceros.github.io/2024/11/09/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Android%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/11/09/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Android%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/11/09/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Android%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/11/09/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Android%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/</id>
     <published>2024-11-09T05:24:38.000Z</published>
     <updated>2024-11-10T08:15:44.714Z</updated>
     
@@ -81,14 +81,14 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>Linux二进制分析入门</title>
-    <link href="http://monoceros.github.io/2024/11/09/Linux%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E6%9E%90%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/11/09/Linux%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E6%9E%90%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/11/09/Linux%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E6%9E%90%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/11/09/Linux%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E6%9E%90%E5%85%A5%E9%97%A8/</id>
     <published>2024-11-09T05:24:04.000Z</published>
     <updated>2024-11-09T05:24:26.084Z</updated>
     
@@ -104,14 +104,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-DEX文件格式初探</title>
-    <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-DEX%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%88%9D%E6%8E%A2/"/>
-    <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-DEX%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%88%9D%E6%8E%A2/</id>
+    <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-DEX%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%88%9D%E6%8E%A2/"/>
+    <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-DEX%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E5%88%9D%E6%8E%A2/</id>
     <published>2024-10-28T11:03:36.000Z</published>
     <updated>2024-11-10T08:15:50.062Z</updated>
     
@@ -127,14 +127,14 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-Unidbg入门</title>
-    <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:02:59.000Z</published>
     <updated>2024-11-10T08:16:08.893Z</updated>
     
@@ -150,14 +150,14 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-Unicorn入门</title>
-    <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unicorn%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unicorn%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unicorn%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unicorn%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:02:18.000Z</published>
     <updated>2024-11-10T08:16:03.539Z</updated>
     
@@ -173,16 +173,16 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-Frida入门</title>
-    <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:01:16.000Z</published>
-    <updated>2024-11-10T09:09:18.226Z</updated>
+    <updated>2024-11-11T15:14:53.104Z</updated>
     
     
       
@@ -196,16 +196,16 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-安全基线</title>
-    <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%9F%BA%E7%BA%BF/"/>
-    <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%9F%BA%E7%BA%BF/</id>
+    <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%9F%BA%E7%BA%BF/"/>
+    <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%9F%BA%E7%BA%BF/</id>
     <published>2024-10-28T11:00:42.000Z</published>
-    <updated>2024-11-10T08:16:14.165Z</updated>
+    <updated>2024-11-11T13:48:57.437Z</updated>
     
     
       
@@ -219,16 +219,16 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>安卓逆向入门-基础知识</title>
-    <link href="http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    <id>http://monoceros.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
+    <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
     <published>2024-10-28T10:59:59.000Z</published>
-    <updated>2024-11-10T08:16:19.178Z</updated>
+    <updated>2024-11-11T13:06:50.392Z</updated>
     
     
       
@@ -242,14 +242,14 @@
     
     
     
-    <category term="移动安全" scheme="http://monoceros.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
+    <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
     
   </entry>
   
   <entry>
     <title>Web入门-JS逆向</title>
-    <link href="http://monoceros.github.io/2024/10/20/Web%E5%85%A5%E9%97%A8-JS%E9%80%86%E5%90%91/"/>
-    <id>http://monoceros.github.io/2024/10/20/Web%E5%85%A5%E9%97%A8-JS%E9%80%86%E5%90%91/</id>
+    <link href="https://monoceros406.github.io/2024/10/20/Web%E5%85%A5%E9%97%A8-JS%E9%80%86%E5%90%91/"/>
+    <id>https://monoceros406.github.io/2024/10/20/Web%E5%85%A5%E9%97%A8-JS%E9%80%86%E5%90%91/</id>
     <published>2024-10-20T13:17:13.000Z</published>
     <updated>2024-11-09T05:21:47.738Z</updated>
     
@@ -265,14 +265,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>硬件安全初探-实战基础</title>
-    <link href="http://monoceros.github.io/2024/10/20/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2-%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80/"/>
-    <id>http://monoceros.github.io/2024/10/20/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2-%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80/</id>
+    <link href="https://monoceros406.github.io/2024/10/20/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2-%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80/"/>
+    <id>https://monoceros406.github.io/2024/10/20/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2-%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80/</id>
     <published>2024-10-20T11:11:34.000Z</published>
     <updated>2024-10-20T13:09:34.426Z</updated>
     
@@ -288,14 +288,14 @@
     
     
     
-    <category term="IOT" scheme="http://monoceros.github.io/tags/IOT/"/>
+    <category term="IOT" scheme="https://monoceros406.github.io/tags/IOT/"/>
     
   </entry>
   
   <entry>
     <title>恶意程式前线战术指南笔记</title>
-    <link href="http://monoceros.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/"/>
-    <id>http://monoceros.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/</id>
+    <link href="https://monoceros406.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/"/>
+    <id>https://monoceros406.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/</id>
     <published>2024-10-16T11:07:12.000Z</published>
     <updated>2024-10-28T10:59:28.616Z</updated>
     
@@ -311,14 +311,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>Windows软件调试初探-WinDBG命令入门</title>
-    <link href="http://monoceros.github.io/2024/10/16/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-WinDBG%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/10/16/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-WinDBG%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/10/16/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-WinDBG%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/10/16/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-WinDBG%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-16T11:00:06.000Z</published>
     <updated>2024-10-16T11:00:45.074Z</updated>
     
@@ -334,14 +334,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>Windows驱动开发入门-NDIS小端口驱动</title>
-    <link href="http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%B0%8F%E7%AB%AF%E5%8F%A3%E9%A9%B1%E5%8A%A8/"/>
-    <id>http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%B0%8F%E7%AB%AF%E5%8F%A3%E9%A9%B1%E5%8A%A8/</id>
+    <link href="https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%B0%8F%E7%AB%AF%E5%8F%A3%E9%A9%B1%E5%8A%A8/"/>
+    <id>https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%B0%8F%E7%AB%AF%E5%8F%A3%E9%A9%B1%E5%8A%A8/</id>
     <published>2024-10-08T11:21:54.000Z</published>
     <updated>2024-10-08T11:24:55.456Z</updated>
     
@@ -357,14 +357,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>Windows驱动开发入门-NDIS协议驱动源码</title>
-    <link href="http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8%E6%BA%90%E7%A0%81/"/>
-    <id>http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8%E6%BA%90%E7%A0%81/</id>
+    <link href="https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8%E6%BA%90%E7%A0%81/"/>
+    <id>https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8%E6%BA%90%E7%A0%81/</id>
     <published>2024-10-08T11:21:15.000Z</published>
     <updated>2024-10-08T11:21:32.154Z</updated>
     
@@ -380,14 +380,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>Windows驱动开发入门-NDIS协议驱动</title>
-    <link href="http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8/"/>
-    <id>http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8/</id>
+    <link href="https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8/"/>
+    <id>https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%8D%8F%E8%AE%AE%E9%A9%B1%E5%8A%A8/</id>
     <published>2024-10-08T11:20:42.000Z</published>
     <updated>2024-10-08T11:21:05.601Z</updated>
     
@@ -403,14 +403,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>Windows驱动开发入门-WFP过滤平台</title>
-    <link href="http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-WFP%E8%BF%87%E6%BB%A4%E5%B9%B3%E5%8F%B0/"/>
-    <id>http://monoceros.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-WFP%E8%BF%87%E6%BB%A4%E5%B9%B3%E5%8F%B0/</id>
+    <link href="https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-WFP%E8%BF%87%E6%BB%A4%E5%B9%B3%E5%8F%B0/"/>
+    <id>https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-WFP%E8%BF%87%E6%BB%A4%E5%B9%B3%E5%8F%B0/</id>
     <published>2024-10-08T11:19:52.000Z</published>
     <updated>2024-10-08T11:20:28.148Z</updated>
     
@@ -426,14 +426,14 @@
     
     
     
-    <category term="逆向工程" scheme="http://monoceros.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>Java代码审计入门</title>
-    <link href="http://monoceros.github.io/2024/10/08/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%85%A5%E9%97%A8/"/>
-    <id>http://monoceros.github.io/2024/10/08/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%85%A5%E9%97%A8/</id>
+    <link href="https://monoceros406.github.io/2024/10/08/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/10/08/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-08T11:17:52.000Z</published>
     <updated>2024-10-08T11:18:20.130Z</updated>
     
@@ -449,14 +449,14 @@
     
     
     
-    <category term="Web" scheme="http://monoceros.github.io/tags/Web/"/>
+    <category term="Web" scheme="https://monoceros406.github.io/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>Web入门-Java相关</title>
-    <link href="http://monoceros.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-Java%E7%9B%B8%E5%85%B3/"/>
-    <id>http://monoceros.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-Java%E7%9B%B8%E5%85%B3/</id>
+    <link href="https://monoceros406.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-Java%E7%9B%B8%E5%85%B3/"/>
+    <id>https://monoceros406.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-Java%E7%9B%B8%E5%85%B3/</id>
     <published>2024-10-08T11:17:02.000Z</published>
     <updated>2024-10-08T11:17:36.024Z</updated>
     
@@ -472,7 +472,7 @@
     
     
     
-    <category term="Web" scheme="http://monoceros.github.io/tags/Web/"/>
+    <category term="Web" scheme="https://monoceros406.github.io/tags/Web/"/>
     
   </entry>
   
