@@ -6,7 +6,7 @@
   <link href="https://monoceros406.github.io/atom.xml" rel="self"/>
   
   <link href="https://monoceros406.github.io/"/>
-  <updated>2024-11-13T14:06:13.467Z</updated>
+  <updated>2024-11-22T15:03:13.137Z</updated>
   <id>https://monoceros406.github.io/</id>
   
   <author>
@@ -17,11 +17,80 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>PyQPanda入门-量子计算入门</title>
+    <link href="https://monoceros406.github.io/2024/11/22/PyQPanda%E5%85%A5%E9%97%A8-%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/11/22/PyQPanda%E5%85%A5%E9%97%A8-%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97%E5%85%A5%E9%97%A8/</id>
+    <published>2024-11-22T14:09:11.000Z</published>
+    <updated>2024-11-22T15:03:13.137Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;PyQPanda入门-量子计算入门&quot;&gt;&lt;a href=&quot;#PyQPanda入门-量子计算入门&quot; class=&quot;headerlink&quot; title=&quot;PyQPanda入门-量子计算入门&quot;&gt;&lt;/a&gt;PyQPanda入门-量子计算入门&lt;/h1&gt;&lt;h2</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Crypto" scheme="https://monoceros406.github.io/tags/Crypto/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UEFI编程入门-环境准备</title>
+    <link href="https://monoceros406.github.io/2024/11/22/UEFI%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/"/>
+    <id>https://monoceros406.github.io/2024/11/22/UEFI%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/</id>
+    <published>2024-11-22T08:28:38.000Z</published>
+    <updated>2024-11-22T13:24:12.687Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;UEFI编程入门-环境准备&quot;&gt;&lt;a href=&quot;#UEFI编程入门-环境准备&quot; class=&quot;headerlink&quot; title=&quot;UEFI编程入门-环境准备&quot;&gt;&lt;/a&gt;UEFI编程入门-环境准备&lt;/h1&gt;&lt;h2 id=&quot;环境准备&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows驱动开发入门-进程和线程通知</title>
+    <link href="https://monoceros406.github.io/2024/11/21/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%9F%A5/"/>
+    <id>https://monoceros406.github.io/2024/11/21/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%9F%A5/</id>
+    <published>2024-11-21T07:15:27.000Z</published>
+    <updated>2024-11-22T07:39:25.959Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Windows驱动开发入门-进程和线程通知&quot;&gt;&lt;a href=&quot;#Windows驱动开发入门-进程和线程通知&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>安卓逆向入门-安全合规</title>
     <link href="https://monoceros406.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/"/>
     <id>https://monoceros406.github.io/2024/11/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/</id>
     <published>2024-11-11T06:44:26.000Z</published>
-    <updated>2024-11-13T14:06:13.467Z</updated>
+    <updated>2024-11-17T12:17:25.857Z</updated>
     
     
       
@@ -136,7 +205,7 @@
     <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/"/>
     <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Unidbg%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:02:59.000Z</published>
-    <updated>2024-11-10T08:16:08.893Z</updated>
+    <updated>2024-11-17T13:22:52.938Z</updated>
     
     
       
@@ -182,7 +251,7 @@
     <link href="https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/"/>
     <id>https://monoceros406.github.io/2024/10/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8-Frida%E5%85%A5%E9%97%A8/</id>
     <published>2024-10-28T11:01:16.000Z</published>
-    <updated>2024-11-11T15:14:53.104Z</updated>
+    <updated>2024-11-17T12:38:30.478Z</updated>
     
     
       
@@ -297,7 +366,7 @@
     <link href="https://monoceros406.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/"/>
     <id>https://monoceros406.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/</id>
     <published>2024-10-16T11:07:12.000Z</published>
-    <updated>2024-10-28T10:59:28.616Z</updated>
+    <updated>2024-11-17T04:18:38.088Z</updated>
     
     
       
@@ -404,75 +473,6 @@
     
     
     <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Windows驱动开发入门-WFP过滤平台</title>
-    <link href="https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-WFP%E8%BF%87%E6%BB%A4%E5%B9%B3%E5%8F%B0/"/>
-    <id>https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-WFP%E8%BF%87%E6%BB%A4%E5%B9%B3%E5%8F%B0/</id>
-    <published>2024-10-08T11:19:52.000Z</published>
-    <updated>2024-10-08T11:20:28.148Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Windows驱动开发入门-WFP过滤平台&quot;&gt;&lt;a href=&quot;#Windows驱动开发入门-WFP过滤平台&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java代码审计入门</title>
-    <link href="https://monoceros406.github.io/2024/10/08/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%85%A5%E9%97%A8/"/>
-    <id>https://monoceros406.github.io/2024/10/08/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%85%A5%E9%97%A8/</id>
-    <published>2024-10-08T11:17:52.000Z</published>
-    <updated>2024-10-08T11:18:20.130Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Java代码审计入门&quot;&gt;&lt;a href=&quot;#Java代码审计入门&quot; class=&quot;headerlink&quot; title=&quot;Java代码审计入门&quot;&gt;&lt;/a&gt;Java代码审计入门&lt;/h1&gt;&lt;h2 id=&quot;环境准备&quot;&gt;&lt;a href=&quot;#环境准备&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Web" scheme="https://monoceros406.github.io/tags/Web/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Web入门-Java相关</title>
-    <link href="https://monoceros406.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-Java%E7%9B%B8%E5%85%B3/"/>
-    <id>https://monoceros406.github.io/2024/10/08/Web%E5%85%A5%E9%97%A8-Java%E7%9B%B8%E5%85%B3/</id>
-    <published>2024-10-08T11:17:02.000Z</published>
-    <updated>2024-10-08T11:17:36.024Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Web入门-Java相关&quot;&gt;&lt;a href=&quot;#Web入门-Java相关&quot; class=&quot;headerlink&quot; title=&quot;Web入门-Java相关&quot;&gt;&lt;/a&gt;Web入门-Java相关&lt;/h1&gt;&lt;h2</summary>
-        
-      
-    
-    
-    
-    
-    <category term="Web" scheme="https://monoceros406.github.io/tags/Web/"/>
     
   </entry>
   
