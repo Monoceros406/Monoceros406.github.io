@@ -6,7 +6,7 @@
   <link href="https://monoceros406.github.io/atom.xml" rel="self"/>
   
   <link href="https://monoceros406.github.io/"/>
-  <updated>2024-11-28T02:07:53.085Z</updated>
+  <updated>2024-12-07T15:21:41.197Z</updated>
   <id>https://monoceros406.github.io/</id>
   
   <author>
@@ -17,18 +17,133 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>OpenSSL入门-常用密码</title>
-    <link href="https://monoceros406.github.io/2024/11/24/OpenSSL%E5%85%A5%E9%97%A8-%E5%B8%B8%E7%94%A8%E5%AF%86%E7%A0%81/"/>
-    <id>https://monoceros406.github.io/2024/11/24/OpenSSL%E5%85%A5%E9%97%A8-%E5%B8%B8%E7%94%A8%E5%AF%86%E7%A0%81/</id>
+    <title>OpenSSL入门-杂凑函数</title>
+    <link href="https://monoceros406.github.io/2024/12/07/OpenSSL%E5%85%A5%E9%97%A8-%E6%9D%82%E5%87%91%E5%87%BD%E6%95%B0/"/>
+    <id>https://monoceros406.github.io/2024/12/07/OpenSSL%E5%85%A5%E9%97%A8-%E6%9D%82%E5%87%91%E5%87%BD%E6%95%B0/</id>
+    <published>2024-12-07T13:20:16.000Z</published>
+    <updated>2024-12-07T15:21:41.197Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;OpenSSL入门-杂凑函数&quot;&gt;&lt;a href=&quot;#OpenSSL入门-杂凑函数&quot; class=&quot;headerlink&quot; title=&quot;OpenSSL入门-杂凑函数&quot;&gt;&lt;/a&gt;OpenSSL入门-杂凑函数&lt;/h1&gt;&lt;h2 id=&quot;SM3&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Crypto" scheme="https://monoceros406.github.io/tags/Crypto/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>WindowsAPI编程核心技术-内核枚举</title>
+    <link href="https://monoceros406.github.io/2024/12/05/WindowsAPI%E7%BC%96%E7%A8%8B%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E5%86%85%E6%A0%B8%E6%9E%9A%E4%B8%BE/"/>
+    <id>https://monoceros406.github.io/2024/12/05/WindowsAPI%E7%BC%96%E7%A8%8B%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E5%86%85%E6%A0%B8%E6%9E%9A%E4%B8%BE/</id>
+    <published>2024-12-05T01:34:52.000Z</published>
+    <updated>2024-12-05T15:11:23.992Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;WindowsAPI编程核心技术-内核枚举&quot;&gt;&lt;a href=&quot;#WindowsAPI编程核心技术-内核枚举&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows驱动开发入门-安全进阶</title>
+    <link href="https://monoceros406.github.io/2024/11/30/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/"/>
+    <id>https://monoceros406.github.io/2024/11/30/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/</id>
+    <published>2024-11-30T08:52:59.000Z</published>
+    <updated>2024-12-06T15:05:31.790Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Windows驱动开发入门-安全进阶&quot;&gt;&lt;a href=&quot;#Windows驱动开发入门-安全进阶&quot; class=&quot;headerlink&quot; title=&quot;Windows驱动开发入门-安全进阶&quot;&gt;&lt;/a&gt;Windows驱动开发入门-安全进阶&lt;/h1&gt;&lt;h2</summary>
+        
+      
+    
+    
+    
+    
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UEFI编程入门-图形与文字显示</title>
+    <link href="https://monoceros406.github.io/2024/11/29/UEFI%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8-%E5%9B%BE%E5%BD%A2%E4%B8%8E%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/"/>
+    <id>https://monoceros406.github.io/2024/11/29/UEFI%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8-%E5%9B%BE%E5%BD%A2%E4%B8%8E%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/</id>
+    <published>2024-11-29T00:55:25.000Z</published>
+    <updated>2024-11-29T13:21:55.938Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;UEFI编程入门-图形与文字显示&quot;&gt;&lt;a href=&quot;#UEFI编程入门-图形与文字显示&quot; class=&quot;headerlink&quot; title=&quot;UEFI编程入门-图形与文字显示&quot;&gt;&lt;/a&gt;UEFI编程入门-图形与文字显示&lt;/h1&gt;&lt;h2 id=&quot;显示基础&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>机器学习入门</title>
+    <link href="https://monoceros406.github.io/2024/11/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/"/>
+    <id>https://monoceros406.github.io/2024/11/28/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/</id>
+    <published>2024-11-28T07:06:20.000Z</published>
+    <updated>2024-11-28T09:43:29.173Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;机器学习入门&quot;&gt;&lt;a href=&quot;#机器学习入门&quot; class=&quot;headerlink&quot; title=&quot;机器学习入门&quot;&gt;&lt;/a&gt;机器学习入门&lt;/h1&gt;&lt;h2 id=&quot;垃圾邮件过滤&quot;&gt;&lt;a href=&quot;#垃圾邮件过滤&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="Python" scheme="https://monoceros406.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OpenSSL入门-对称密码</title>
+    <link href="https://monoceros406.github.io/2024/11/24/OpenSSL%E5%85%A5%E9%97%A8-%E5%AF%B9%E7%A7%B0%E5%AF%86%E7%A0%81/"/>
+    <id>https://monoceros406.github.io/2024/11/24/OpenSSL%E5%85%A5%E9%97%A8-%E5%AF%B9%E7%A7%B0%E5%AF%86%E7%A0%81/</id>
     <published>2024-11-24T07:44:11.000Z</published>
-    <updated>2024-11-28T02:07:53.085Z</updated>
+    <updated>2024-12-07T13:12:48.632Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;OpenSSL入门-常用密码&quot;&gt;&lt;a href=&quot;#OpenSSL入门-常用密码&quot; class=&quot;headerlink&quot; title=&quot;OpenSSL入门-常用密码&quot;&gt;&lt;/a&gt;OpenSSL入门-常用密码&lt;/h1&gt;&lt;h2 id=&quot;安装&quot;&gt;&lt;a</summary>
+    <summary type="html">&lt;h1 id=&quot;OpenSSL入门-对称密码&quot;&gt;&lt;a href=&quot;#OpenSSL入门-对称密码&quot; class=&quot;headerlink&quot; title=&quot;OpenSSL入门-对称密码&quot;&gt;&lt;/a&gt;OpenSSL入门-对称密码&lt;/h1&gt;&lt;h2 id=&quot;安装&quot;&gt;&lt;a</summary>
         
       
     
@@ -358,121 +473,6 @@
     
     
     <category term="移动安全" scheme="https://monoceros406.github.io/tags/%E7%A7%BB%E5%8A%A8%E5%AE%89%E5%85%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Web入门-JS逆向</title>
-    <link href="https://monoceros406.github.io/2024/10/20/Web%E5%85%A5%E9%97%A8-JS%E9%80%86%E5%90%91/"/>
-    <id>https://monoceros406.github.io/2024/10/20/Web%E5%85%A5%E9%97%A8-JS%E9%80%86%E5%90%91/</id>
-    <published>2024-10-20T13:17:13.000Z</published>
-    <updated>2024-11-09T05:21:47.738Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Web入门-JS逆向&quot;&gt;&lt;a href=&quot;#Web入门-JS逆向&quot; class=&quot;headerlink&quot; title=&quot;Web入门-JS逆向&quot;&gt;&lt;/a&gt;Web入门-JS逆向&lt;/h1&gt;&lt;h2 id=&quot;JS基础&quot;&gt;&lt;a href=&quot;#JS基础&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>硬件安全初探-实战基础</title>
-    <link href="https://monoceros406.github.io/2024/10/20/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2-%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80/"/>
-    <id>https://monoceros406.github.io/2024/10/20/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E5%88%9D%E6%8E%A2-%E5%AE%9E%E6%88%98%E5%9F%BA%E7%A1%80/</id>
-    <published>2024-10-20T11:11:34.000Z</published>
-    <updated>2024-11-28T02:41:01.160Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;硬件安全初探-实战基础&quot;&gt;&lt;a href=&quot;#硬件安全初探-实战基础&quot; class=&quot;headerlink&quot; title=&quot;硬件安全初探-实战基础&quot;&gt;&lt;/a&gt;硬件安全初探-实战基础&lt;/h1&gt;&lt;h2 id=&quot;MIPS32汇编&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    
-    <category term="IOT" scheme="https://monoceros406.github.io/tags/IOT/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>恶意程式前线战术指南笔记</title>
-    <link href="https://monoceros406.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/"/>
-    <id>https://monoceros406.github.io/2024/10/16/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%89%8D%E7%BA%BF%E6%88%98%E6%9C%AF%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/</id>
-    <published>2024-10-16T11:07:12.000Z</published>
-    <updated>2024-11-28T02:42:39.956Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;恶意程式前线战术指南笔记&quot;&gt;&lt;a href=&quot;#恶意程式前线战术指南笔记&quot; class=&quot;headerlink&quot; title=&quot;恶意程式前线战术指南笔记&quot;&gt;&lt;/a&gt;恶意程式前线战术指南笔记&lt;/h1&gt;&lt;h2 id=&quot;档案映射&quot;&gt;&lt;a href=&quot;#档案映射&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Windows软件调试初探-WinDBG命令入门</title>
-    <link href="https://monoceros406.github.io/2024/10/16/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-WinDBG%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/"/>
-    <id>https://monoceros406.github.io/2024/10/16/Windows%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E5%88%9D%E6%8E%A2-WinDBG%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/</id>
-    <published>2024-10-16T11:00:06.000Z</published>
-    <updated>2024-10-16T11:00:45.074Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Windows软件调试初探-WinDBG命令入门&quot;&gt;&lt;a href=&quot;#Windows软件调试初探-WinDBG命令入门&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Windows驱动开发入门-NDIS小端口驱动</title>
-    <link href="https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%B0%8F%E7%AB%AF%E5%8F%A3%E9%A9%B1%E5%8A%A8/"/>
-    <id>https://monoceros406.github.io/2024/10/08/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-NDIS%E5%B0%8F%E7%AB%AF%E5%8F%A3%E9%A9%B1%E5%8A%A8/</id>
-    <published>2024-10-08T11:21:54.000Z</published>
-    <updated>2024-10-08T11:24:55.456Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Windows驱动开发入门-NDIS小端口驱动&quot;&gt;&lt;a href=&quot;#Windows驱动开发入门-NDIS小端口驱动&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    
-    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
