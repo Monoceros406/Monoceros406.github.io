@@ -6,7 +6,7 @@
   <link href="https://monoceros406.github.io/atom.xml" rel="self"/>
   
   <link href="https://monoceros406.github.io/"/>
-  <updated>2024-12-17T02:46:12.051Z</updated>
+  <updated>2024-12-26T08:25:30.032Z</updated>
   <id>https://monoceros406.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>公告-无限期停更</title>
+    <link href="https://monoceros406.github.io/2024/12/26/%E5%85%AC%E5%91%8A-%E6%97%A0%E9%99%90%E6%9C%9F%E5%81%9C%E6%9B%B4/"/>
+    <id>https://monoceros406.github.io/2024/12/26/%E5%85%AC%E5%91%8A-%E6%97%A0%E9%99%90%E6%9C%9F%E5%81%9C%E6%9B%B4/</id>
+    <published>2024-12-26T08:21:05.000Z</published>
+    <updated>2024-12-26T08:25:30.032Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;公告-停更&quot;&gt;&lt;a href=&quot;#公告-停更&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="其他" scheme="https://monoceros406.github.io/tags/%E5%85%B6%E4%BB%96/"/>
+    
+  </entry>
   
   <entry>
     <title>UEFI编程入门-GUI开发</title>
@@ -443,29 +466,6 @@
         
         
     <summary type="html">&lt;h1 id=&quot;UEFI编程入门-环境准备&quot;&gt;&lt;a href=&quot;#UEFI编程入门-环境准备&quot; class=&quot;headerlink&quot; title=&quot;UEFI编程入门-环境准备&quot;&gt;&lt;/a&gt;UEFI编程入门-环境准备&lt;/h1&gt;&lt;h2 id=&quot;环境准备&quot;&gt;&lt;a</summary>
-        
-      
-    
-    
-    
-    
-    <category term="逆向工程" scheme="https://monoceros406.github.io/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Windows驱动开发入门-进程和线程通知</title>
-    <link href="https://monoceros406.github.io/2024/11/21/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%9F%A5/"/>
-    <id>https://monoceros406.github.io/2024/11/21/Windows%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%9F%A5/</id>
-    <published>2024-11-21T07:15:27.000Z</published>
-    <updated>2024-11-23T13:32:46.507Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Windows驱动开发入门-进程和线程通知&quot;&gt;&lt;a href=&quot;#Windows驱动开发入门-进程和线程通知&quot; class=&quot;headerlink&quot;</summary>
         
       
     
